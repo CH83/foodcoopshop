@@ -35,7 +35,6 @@ define('CUSTOMER_GROUP_SUPERADMIN', 5);
 
 define('PHONE_REGEX', '/^[0-9 ()+-\/]{7,20}$/');
 define('ZIP_REGEX', '/^[0-9]{4,5}$/');
-define('IBAN_REGEX', '/^([a-zA-Z]\s?){2}(([0-9]){18}|([0-9]){22})$/'); // austria and germany supported
 define('BIC_REGEX', '/^[a-z]{6}[2-9a-z][0-9a-np-z]([a-z0-9]{3}|x{3})?$/i');
 define('HTTPS_REGEX', '/^https\:\/\//');
 // copied from Cake/Utility/Validation.php with additional $ at the end
@@ -76,6 +75,11 @@ return [
         'depositPaymentCashlessStartDate' => '2016-01-01',
         'depositForManufacturersStartDate' => '2016-01-01',
         'dateOfFirstSendInvoiceCronjobWithPickupDayUpdate' => '2018-11-11', //pickupDayMigration was released in v2.2
+        /**
+         * if set to false, invoices do not contain stock products
+         * criteria for exclusion: Manufacturer.stock_management_enabled = false OR Product.is_stock_product = false
+         */
+        'includeStockProductsInInvoices' => true,
         
         /**
          * weekday on which the weekly cronjob "SendOrderList" is called

@@ -141,7 +141,7 @@ class ManufacturersController extends AdminAppController
                 ]
             ]
         );
-        if (!empty($manufacturer->getErrors())) {
+        if ($manufacturer->hasErrors()) {
             $this->Flash->error(__d('admin', 'Errors_while_saving!'));
             $this->set('manufacturer', $manufacturer);
             $this->render('edit');
@@ -365,11 +365,7 @@ class ManufacturersController extends AdminAppController
             // orders exist => send pdf and email
         } else {
             // generate and save invoice number
-            $invoiceNumber = 1; // default
-            if (! empty($manufacturer->invoices)) {
-                $invoiceNumber = $manufacturer->invoices[0]->invoice_number + 1;
-            }
-            $newInvoiceNumber = $this->Manufacturer->formatInvoiceNumber($invoiceNumber);
+            $newInvoiceNumber = $this->Manufacturer->Invoices->getNextInvoiceNumber($manufacturer->invoices);
             $this->set('newInvoiceNumber', $newInvoiceNumber);
 
             $this->RequestHandler->renderAs($this, 'pdf');
@@ -385,7 +381,7 @@ class ManufacturersController extends AdminAppController
             $invoice2save = [
                 'id_manufacturer' => $manufacturerId,
                 'send_date' => Time::now(),
-                'invoice_number' => $invoiceNumber,
+                'invoice_number' => (int) $newInvoiceNumber,
                 'user_id' => $this->AppAuth->getUserId()
             ];
             $this->Manufacturer->Invoices->save(
@@ -400,8 +396,8 @@ class ManufacturersController extends AdminAppController
             $sendEmail = $this->Manufacturer->getOptionSendInvoice($manufacturer->send_invoice);
             if ($sendEmail) {
                 $email = new AppEmail();
-                $email->setTemplate('Admin.send_invoice')
-                    ->setTo($manufacturer->address_manufacturer->email)
+                $email->viewBuilder()->setTemplate('Admin.send_invoice');
+                $email->setTo($manufacturer->address_manufacturer->email)
                     ->setAttachments([
                         $invoicePdfFile
                     ])
@@ -489,8 +485,8 @@ class ManufacturersController extends AdminAppController
             if ($sendEmail) {
                 $flashMessage = __d('admin', 'Order_lists_successfully_generated_for_manufacturer_{0}_and_sent_to_{1}.', ['<b>'.$manufacturer->name.'</b>'. $manufacturer->address_manufacturer->email]);
                 $email = new AppEmail();
-                $email->setTemplate('Admin.send_order_list')
-                ->setTo($manufacturer->address_manufacturer->email)
+                $email->viewBuilder()->setTemplate('Admin.send_order_list');
+                $email->setTo($manufacturer->address_manufacturer->email)
                 ->setAttachments([
                     $productPdfFile,
                     $customerPdfFile
@@ -618,7 +614,7 @@ class ManufacturersController extends AdminAppController
             $this->setRequest($this->getRequest()->withData('Manufacturers.timebased_currency_max_credit_balance', $this->getRequest()->getData('Manufacturers.timebased_currency_max_credit_balance') * 3600));
         }
 
-        if (!empty($manufacturer->getErrors())) {
+        if ($manufacturer->hasErrors()) {
             $this->Flash->error(__d('admin', 'Errors_while_saving!'));
             if (!empty($this->getRequest()->getData('Manufacturers.timebased_currency_max_credit_balance'))) {
                 $this->setRequest($this->getRequest()->withData('Manufacturers.timebased_currency_max_credit_balance', $this->getRequest()->getData('Manufacturers.timebased_currency_max_credit_balance') / 3600));
@@ -707,7 +703,7 @@ class ManufacturersController extends AdminAppController
 
     private function prepareInvoiceOrOrderList($manufacturerId, $groupType, $dateFrom, $dateTo, $orderState, $saveParam = 'I')
     {
-        $results = $this->Manufacturer->getDataForInvoiceOrOrderList($manufacturerId, $groupType, $dateFrom, $dateTo, $orderState);
+        $results = $this->Manufacturer->getDataForInvoiceOrOrderList($manufacturerId, $groupType, $dateFrom, $dateTo, $orderState, Configure::read('app.includeStockProductsInInvoices'));
         if (empty($results)) {
             // do not throw exception because no debug mails wanted
             die(__d('admin', 'No_orders_within_the_given_time_range.'));

@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2018-11-26 16:14+0100\n"
-"PO-Revision-Date: 2018-11-26 16:18+0100\n"
+"POT-Creation-Date: 2018-12-14 19:56+0100\n"
+"PO-Revision-Date: 2018-12-14 19:58+0100\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: en_US\n"
@@ -69,11 +69,17 @@ msgstr "The desired amount {0} of the attribute {1} of the product {2} is not av
 msgid "The_attribute_does_not_exist."
 msgstr "The attribute does not exist."
 
+msgid "Please_delete_product_from_cart_to_place_order."
+msgstr "Please remove product from cart to place order."
+
 msgid "The_product_{0}_is_not_activated_any_more."
 msgstr "The product {0} is not activated any more."
 
 msgid "The_manufacturer_of_the_product_{0}_has_a_delivery_break_or_product_is_not_activated."
 msgstr "The manufacturer of the product {0} either has a delivery break or the product is not activated any more."
+
+msgid "It_is_not_possible_to_order_the_product_{0}_any_more."
+msgstr "It's not possible to order the product {0} any more."
 
 msgid "Please_enter_how_much_you_want_to_pay_in_{0}."
 msgstr "Please enter how much you want to pay in {0}."
@@ -680,6 +686,12 @@ msgstr "products"
 
 msgid "product"
 msgstr "product"
+
+msgid "{0}_email_addresses_have_been_copied_successfully_to_your_clipboard."
+msgstr "{0} email addresses have been copied successfully to your clipboard."
+
+msgid "1_email_address_has_been_copied_successfully_to_your_clipboard."
+msgstr "One email address has been copied successfully to your clipboard."
 
 msgid "Were_the_products_picked_up?"
 msgstr "Were the products picked up?"
@@ -1491,11 +1503,26 @@ msgstr "Pickup reminder for"
 msgid "to_(time_context)"
 msgstr "to"
 
+msgid "yes"
+msgstr "yes"
+
+msgid "no"
+msgstr "no"
+
+msgid "Invoice_number_abbreviation"
+msgstr "Invoice nº"
+
+msgid "Sent"
+msgstr "Sent"
+
+msgid "Products"
+msgstr "Products"
+
 msgid "Invoices_for_{0}_have_been_sent"
 msgstr "Invoices for {0} have been sent"
 
-msgid "Sent_invoices"
-msgstr "Sent invoices"
+msgid "Generated_invoices"
+msgstr "Generated invoices"
 
 msgid "Sent_order_lists"
 msgstr "Sent order lists"
@@ -1703,9 +1730,6 @@ msgstr "Please only use self-made images (no images from the internet)."
 
 msgid "DELIVERY_DAY"
 msgstr "DELIVERY_DAY"
-
-msgid "Products"
-msgstr "Products"
 
 msgid "Print"
 msgstr "Print"
@@ -1970,12 +1994,6 @@ msgstr "every last {0} of a month"
 
 msgid "individual_date"
 msgstr "individual date"
-
-msgid "yes"
-msgstr "yes"
-
-msgid "no"
-msgstr "no"
 
 msgid "Deleted_Member"
 msgstr "Deleted member"

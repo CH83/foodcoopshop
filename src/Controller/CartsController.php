@@ -184,8 +184,8 @@ class CartsController extends FrontendController
             // send email to manufacturer
             if ($stockAvailableLimitReached && $cartProduct->product->manufacturer->stock_management_enabled && $cartProduct->product->is_stock_product && $cartProduct->product->manufacturer->send_product_sold_out_limit_reached_for_manufacturer) {
                 $email = new AppEmail();
-                $email->setTemplate('stock_available_limit_reached_notification')
-                ->setTo($cartProduct->product->manufacturer->address_manufacturer->email)
+                $email->viewBuilder()->setTemplate('stock_available_limit_reached_notification');
+                $email->setTo($cartProduct->product->manufacturer->address_manufacturer->email)
                 ->setSubject(__('Product_{0}:_Only_{1}_units_on_stock', [
                     $cartProduct->order_detail->product_name,
                     $stockAvailable->quantity
@@ -205,8 +205,8 @@ class CartsController extends FrontendController
             // send email to contact person
             if ($stockAvailableLimitReached && $cartProduct->product->manufacturer->stock_management_enabled && $cartProduct->product->is_stock_product && !empty($cartProduct->product->manufacturer->customer) && $cartProduct->product->manufacturer->send_product_sold_out_limit_reached_for_contact_person) {
                 $email = new AppEmail();
-                $email->setTemplate('stock_available_limit_reached_notification')
-                ->setTo($cartProduct->product->manufacturer->customer->address_customer->email)
+                $email->viewBuilder()->setTemplate('stock_available_limit_reached_notification');
+                $email->setTo($cartProduct->product->manufacturer->customer->address_customer->email)
                 ->setSubject(__('Product_{0}:_Only_{1}_units_on_stock', [
                     $cartProduct->order_detail->product_name,
                     $stockAvailable->quantity
@@ -238,8 +238,8 @@ class CartsController extends FrontendController
     {
         if ($this->AppAuth->user('active')) {
             $email = new AppEmail();
-            $email->setTemplate('order_successful')
-            ->setTo($this->AppAuth->getEmail())
+            $email->viewBuilder()->setTemplate('order_successful');
+            $email->setTo($this->AppAuth->getEmail())
             ->setSubject(__('Order_confirmation'))
             ->setViewVars([
                 'cart' => $this->Cart->getCartGroupedByPickupDay($cart),
@@ -426,21 +426,29 @@ class CartsController extends FrontendController
                 }
                 if (! $attributeIdFound) {
                     $message = __('The_attribute_does_not_exist.');
-                    $message .= ' ' . __('Please_change_amount_or_delete_product_from_cart_to_place_order.');
+                    $message .= ' ' . __('Please_delete_product_from_cart_to_place_order.');
                     $cartErrors[$cartProduct['productId']][] = $message;
                 }
             }
 
             if (! $product->active) {
                 $message = __('The_product_{0}_is_not_activated_any_more.', ['<b>' . $product->name . '</b>']);
-                $message .= ' ' . __('Please_change_amount_or_delete_product_from_cart_to_place_order.');
+                $message .= ' ' . __('Please_delete_product_from_cart_to_place_order.');
                 $cartErrors[$cartProduct['productId']][] = $message;
             }
 
             if (! $product->manufacturer->active || $this->Product->deliveryBreakEnabled($product->manufacturer->no_delivery_days, $product->next_delivery_day)) {
                 $message = __('The_manufacturer_of_the_product_{0}_has_a_delivery_break_or_product_is_not_activated.', ['<b>' . $product->name . '</b>']);
-                $message .= ' ' . __('Please_change_amount_or_delete_product_from_cart_to_place_order.');
+                $message .= ' ' . __('Please_delete_product_from_cart_to_place_order.');
                 $cartErrors[$cartProduct['productId']][] = $message;
+            }
+            
+            if ($product->delivery_rhythm_type == 'individual') {
+                if ($product->delivery_rhythm_order_possible_until->i18nFormat(Configure::read('app.timeHelper')->getI18Format('Database')) < Configure::read('app.timeHelper')->getCurrentDateForDatabase()) {
+                    $message = __('It_is_not_possible_to_order_the_product_{0}_any_more.', ['<b>' . $product->name . '</b>']);
+                    $message .= ' ' . __('Please_delete_product_from_cart_to_place_order.');
+                    $cartErrors[$cartProduct['productId']][] = $message;
+                }
             }
 
             // prepare data for table order_detail
@@ -555,7 +563,7 @@ class CartsController extends FrontendController
             $options
         );
         
-        if (!empty($cart['Cart']->getErrors())) {
+        if ($cart['Cart']->hasErrors()) {
             $formErrors = true;
         }
         $this->set('cart', $cart['Cart']); // to show error messages in form (from validation)
@@ -669,8 +677,8 @@ class CartsController extends FrontendController
             if ($sendInstantOrderNotification && !$bulkOrdersAllowed) {
                 $manufacturersThatReceivedInstantOrderNotification[] = $manufacturer->name;
                 $email = new AppEmail();
-                $email->setTemplate('instant_order_notification')
-                ->setTo($manufacturer->address_manufacturer->email)
+                $email->viewBuilder()->setTemplate('instant_order_notification');
+                $email->setTo($manufacturer->address_manufacturer->email)
                 ->setSubject(__('Notification_about_instant_order_order'))
                 ->setViewVars([
                     'appAuth' => $this->AppAuth,

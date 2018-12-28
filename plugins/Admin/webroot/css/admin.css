@@ -118,6 +118,9 @@ a.btn-outline-light.help {
 .bootstrap-select {
     width: 193px ! important;
 }
+.bootstrap-select .dropdown-toggle .filter-option-inner {
+	padding-right: 12px;
+}
 .bootstrap-select .dropdown-menu li a span.text,
 .bootstrap-select .no-results {
     color: #262626;
@@ -951,15 +954,14 @@ body.payments .bottom-button-container {
 	float: left;
 	margin-bottom: 5px;
 }
-#product-is-stock-product-edit-form label.checkbox,
-#product-delivery-rhythm-edit-form label.checkbox {
+#product-is-stock-product-edit-form label.checkbox {
 	font-weight: normal;
 	clear: both;
 	margin-bottom: 10px;
+	width: 100%;
 }
 #product-price-edit-form label.radio input,
-#product-is-stock-product-edit-form label.checkbox input,
-#product-delivery-rhythm-edit-form label.checkbox input {
+#product-is-stock-product-edit-form label.checkbox input {
 	position: static;
 	float: left;
     width: 20px;
@@ -1042,6 +1044,9 @@ h2 span {
     font-size: 12px;
     color: #333;
     letter-spacing: normal;
+}
+h2.info {
+    background-color: #719f41;
 }
 .fcs-form h2:not(:nth-of-type(1)) {
     margin-top: 25px;

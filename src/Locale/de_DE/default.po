@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2018-11-26 16:14+0100\n"
-"PO-Revision-Date: 2018-11-26 16:16+0100\n"
+"POT-Creation-Date: 2018-12-14 19:56+0100\n"
+"PO-Revision-Date: 2018-12-14 19:57+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -69,11 +69,17 @@ msgstr "Die gewünschte Anzahl {0} der Variante {1} des Produktes {2} ist leider
 msgid "The_attribute_does_not_exist."
 msgstr "Die Variante existiert nicht."
 
+msgid "Please_delete_product_from_cart_to_place_order."
+msgstr "Bitte lösche das Produkt aus deinem Warenkorb um die Bestellung abzuschließen."
+
 msgid "The_product_{0}_is_not_activated_any_more."
 msgstr "Das Produkt {0} ist leider nicht mehr aktiviert und somit nicht mehr bestellbar."
 
 msgid "The_manufacturer_of_the_product_{0}_has_a_delivery_break_or_product_is_not_activated."
 msgstr "Der Hersteller des Produktes {0} hat entweder Lieferpause oder er ist nicht mehr aktiviert und das Produkt ist somit nicht mehr bestellbar."
+
+msgid "It_is_not_possible_to_order_the_product_{0}_any_more."
+msgstr "Das Produkt {0} kann nicht mehr bestellt werden."
 
 msgid "Please_enter_how_much_you_want_to_pay_in_{0}."
 msgstr "Bitte gib an, wie viel du in {0} zahlen möchtest."
@@ -680,6 +686,12 @@ msgstr "Produkte"
 
 msgid "product"
 msgstr "Produkt"
+
+msgid "{0}_email_addresses_have_been_copied_successfully_to_your_clipboard."
+msgstr "{0} E-Mail-Adressen wurden erfolgreich in deine Zwischenablage kopiert."
+
+msgid "1_email_address_has_been_copied_successfully_to_your_clipboard."
+msgstr "Eine E-Mail-Adresse wurde erfolgreich in deine Zwischenablage kopiert."
 
 msgid "Were_the_products_picked_up?"
 msgstr "Wurden die Produkte abgeholt?"
@@ -1491,11 +1503,26 @@ msgstr "Abhol-Erinnerung für"
 msgid "to_(time_context)"
 msgstr "bis"
 
+msgid "yes"
+msgstr "ja"
+
+msgid "no"
+msgstr "nein"
+
+msgid "Invoice_number_abbreviation"
+msgstr "Re. Nr."
+
+msgid "Sent"
+msgstr "Versendet"
+
+msgid "Products"
+msgstr "Produkte"
+
 msgid "Invoices_for_{0}_have_been_sent"
 msgstr "Rechnungen für {0} wurden verschickt"
 
-msgid "Sent_invoices"
-msgstr "Verschickte Rechnungen"
+msgid "Generated_invoices"
+msgstr "Generierte Rechnungen"
 
 msgid "Sent_order_lists"
 msgstr "Verschickte Bestelllisten"
@@ -1703,9 +1730,6 @@ msgstr "Bitte nur selbstgemachte Bilder verwenden<br />(keine aus dem Internet).
 
 msgid "DELIVERY_DAY"
 msgstr "ABHOLTAG"
-
-msgid "Products"
-msgstr "Produkte"
 
 msgid "Print"
 msgstr "Drucken"
@@ -1970,12 +1994,6 @@ msgstr "jeden letzten {0} im Monat"
 
 msgid "individual_date"
 msgstr "individuelles Datum"
-
-msgid "yes"
-msgstr "ja"
-
-msgid "no"
-msgstr "nein"
 
 msgid "Deleted_Member"
 msgstr "Gelöschtes Mitglied"

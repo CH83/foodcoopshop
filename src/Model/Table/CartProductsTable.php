@@ -62,7 +62,7 @@ class CartProductsTable extends AppTable
         // get product data from database
         $product = $this->Products->find('all', [
             'conditions' => [
-                'Products.id_product' => $productId
+                'Products.id_product' => (int) $productId
             ],
             'contain' => [
                 'Manufacturers',
@@ -149,6 +149,17 @@ class CartProductsTable extends AppTable
                 'msg' => $message,
                 'productId' => $initialProductId
             ];
+        }
+        
+        if ($product->delivery_rhythm_type == 'individual') {
+            if ($product->delivery_rhythm_order_possible_until->i18nFormat(Configure::read('app.timeHelper')->getI18Format('Database')) < Configure::read('app.timeHelper')->getCurrentDateForDatabase()) {
+                $message = __('It_is_not_possible_to_order_the_product_{0}_any_more.', ['<b>' . $product->name . '</b>']);
+                return [
+                    'status' => 0,
+                    'msg' => $message,
+                    'productId' => $initialProductId
+                ];
+            }
         }
 
         // update amount if cart product already exists
