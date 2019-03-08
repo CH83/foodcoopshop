@@ -81,7 +81,7 @@ class BlogPostsControllerTest extends AppCakeTestCase
     public function testSendBlogPostAsSuperadmin()
     {
         $this->loginAsSuperadmin();
-        $this->browser->get('/admin/blog-posts/sendBlogPost/2');
+        $this->httpClient->get('/admin/blog-posts/sendBlogPost/2');
 
         $this->EmailLog = TableRegistry::getTableLocator()->get('EmailLogs');
         $emailLogs = $this->EmailLog->find('all')->toArray();
@@ -101,7 +101,7 @@ class BlogPostsControllerTest extends AppCakeTestCase
 
     public function testSendBlogPostAsManufacturer() {
         $this->loginAsMeatManufacturer();
-        $this->browser->get('/admin/blog-posts/sendBlogPost/2');
+        $this->httpClient->get('/admin/blog-posts/sendBlogPost/2');
         $this->assertAccessDeniedWithRedirectToLoginForm();
     }
 
