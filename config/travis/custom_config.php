@@ -59,20 +59,9 @@ return [
         'cookieKey' => '77LIqHJAoVS89iRp3QKcdXaAvZTTqRdiweyZo87CoY9c4fieao5KKPWcdS',
 
         /**
-         * defines how many days after the sendOrderListsWeekday the products are delivered
-         * sendOrderListsWeekday is defined in config.php and preset to 3, i.e. "wednesday"
-         */
-        'deliveryDayDelta' => 2,
-
-        /**
          * your host's name, eg. http://www.yourfoodcoop.com
          */
         'cakeServerName' => 'http://www.foodcoopshop.test',
-
-        /**
-         * array of email adresses that receive notifications after new member registrations
-         */
-        'registrationNotificationEmails' => [],
 
         /**
          * whether to apply a member fee to the members account balance

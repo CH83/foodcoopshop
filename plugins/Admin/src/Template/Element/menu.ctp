@@ -36,14 +36,14 @@ $cancelledProductsMenuElement = [
     'slug' => $this->Slug->getActionLogsList().'/index/?types[]=order_detail_cancelled&types[]=order_detail_product_price_changed&&types[]=order_detail_product_quantity_changed&&types[]=order_detail_product_amount_changed',
     'name' => __d('admin', 'Order_adaptions'),
     'options' => [
-        'fa-icon' => 'fa-fw fa-remove'
+        'fa-icon' => 'fa-fw fa-times'
     ]
 ];
 $paymentDepositCustomerAddedMenuElement = [
     'slug' => $this->Slug->getActionLogsList().'/index/?types[]=payment_deposit_customer_added',
     'name' => __d('admin', 'Deposit_returns'),
     'options' => [
-        'fa-icon' => 'fa-fw fa-'.strtolower(Configure::read('app.currencyName'))
+        'fa-icon' => 'fa-fw fa-'.strtolower(Configure::read('app.currencyName').'-sign')
     ]
 ];
 $orderDetailsGroupedByCustomerMenuElement = [
@@ -71,14 +71,14 @@ $blogPostsMenuElement = [
     'slug' => $this->Slug->getBlogPostListAdmin(),
     'name' => __d('admin', 'Blog_posts'),
     'options' => [
-        'fa-icon' => 'fa-fw fa-file-text'
+        'fa-icon' => 'fa-fw fa-file-alt'
     ]
 ];
 $homepageAdministrationElement = [
     'slug' => $this->Slug->getPagesListAdmin(),
     'name' => __d('admin', 'Website_administration'),
     'options' => [
-        'fa-icon' => 'fa-fw fa-pencil-square-o'
+        'fa-icon' => 'fa-fw fa-pencil-alt'
     ]
 ];
 $menu = [];
@@ -160,7 +160,7 @@ if ($appAuth->isSuperadmin() || $appAuth->isAdmin()) {
         'slug' => $this->Slug->getCustomerListAdmin(),
         'name' => __d('admin', 'Members'),
         'options' => [
-            'fa-icon' => 'fa-fw fa-male'
+            'fa-icon' => 'fa-fw fa-user'
         ]
     ];
     $menu[] = $actionLogsMenuElement;
@@ -174,13 +174,15 @@ if ($appAuth->isSuperadmin() || $appAuth->isAdmin()) {
     }
     $customerProfileMenuElement['children'][] = $changePasswordMenuElement;
     $menu[] = $customerProfileMenuElement;
-    $menu[] = $blogPostsMenuElement;
-
+    if (Configure::read('app.isBlogFeatureEnabled')) {
+        $menu[] = $blogPostsMenuElement;
+    }
+    
     $homepageAdministrationElement['children'][] = [
         'slug' => $this->Slug->getPagesListAdmin(),
         'name' => __d('admin', 'Pages'),
         'options' => [
-            'fa-icon' => 'fa-fw fa-pencil-square-o'
+            'fa-icon' => 'fa-fw fa-pencil-alt'
         ]
     ];
 
@@ -223,7 +225,7 @@ if ($appAuth->isSuperadmin() || $appAuth->isAdmin()) {
             'slug' => $reportSlug,
             'name' => __d('admin', 'Financial_reports'),
             'options' => [
-                'fa-icon' => 'fa-fw fa-money'
+                'fa-icon' => 'fa-fw fa-money-bill-alt'
             ]
         ];
         $homepageAdministrationElement['children'][] = [
@@ -289,7 +291,9 @@ if ($appAuth->isManufacturer()) {
     $profileMenu['children'][] = $changePasswordMenuElement;
     $menu[] = $profileMenu;
     $menu[] = $optionsMenu;
-    $menu[] = $blogPostsMenuElement;
+    if (!empty($blogPosts) && Configure::read('app.isBlogFeatureEnabled')) {
+        $menu[] = $blogPostsMenuElement;
+    }
     $menu[] = $actionLogsMenuElement;
 }
 

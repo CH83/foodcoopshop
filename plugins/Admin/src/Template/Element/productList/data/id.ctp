@@ -13,7 +13,7 @@
  * @link          https://www.foodcoopshop.com
  */
 
-echo '<td class="hide">';
+echo '<td class="hide cell-id">';
     echo $product->id_product;
 echo '</td>';
 

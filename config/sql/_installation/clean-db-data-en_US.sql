@@ -79,7 +79,7 @@ INSERT INTO `fcs_configuration` VALUES
 (164,1,'FCS_CUSTOMER_GROUP','To which user group new members should be assigned to?','3','dropdown',40,'en_US','2017-07-26 13:24:47','2017-07-26 13:24:47'),
 (456,1,'FCS_FOOTER_CMS_TEXT','Additional text for footer',NULL,'textarea_big',80,'en_US','2014-06-11 17:50:55','2016-07-01 21:47:47'),
 (508,1,'FCS_FACEBOOK_URL','Facebook url for embedding in footer','https://www.facebook.com/FoodCoopShop/','text',90,'en_US','2015-07-08 13:23:54','2015-07-08 13:23:54'),
-(538,1,'FCS_REGISTRATION_EMAIL_TEXT','Additional text that is sent in the registration e-mail after a successful registration. <br /> <a href=\"/admin/configurations/previewEmail/FCS_REGISTRATION_EMAIL_TEXT\" target=\"_blank\"><img src=\"/node_modules/famfamfam-silk/dist/png/information.png?1483041252\" alt=\"\"> E-mail preview</a>','','textarea_big',170,'en_US','2016-06-26 00:00:00','2016-06-26 00:00:00'),
+(538,1,'FCS_REGISTRATION_EMAIL_TEXT','Additional text that is sent in the registration e-mail after a successful registration. <br /> <a href=\"/admin/configurations/previewEmail/FCS_REGISTRATION_EMAIL_TEXT\" target=\"_blank\"><i class=\"fas fa-info-circle\"></i> E-mail preview</a>','','textarea_big',170,'en_US','2016-06-26 00:00:00','2016-06-26 00:00:00'),
 (543,1,'FCS_RIGHT_INFO_BOX_HTML','Content of the box in the right column below the shopping cart. <br /><div class=\"small\">To make the background of a row green, please format as \"Heading 3\".</div>','<h3>Delivery time</h3>\r\n\r\n<p>The pickup day can be seen in the product description, you can pick the product up on <strong>{DELIVERY_DAY}</strong>&nbsp;between 5 and 7 pm.</p>\r\n\r\n<p>You can order every week until Tuesday midnight and pick them up the following Friday.</p>\r\n','textarea_big',150,'en_US','2017-07-26 13:24:47','2017-07-26 13:24:47'),
 (544,1,'FCS_CART_ENABLED','Is the shopping cart activated?<br /><div class=\"small\">If the food-coop is on holiday, please deactivate the order function here.</div>','1','boolean',10,'en_US','2017-07-26 13:24:47','2017-07-26 13:24:47'),
 (545,1,'FCS_ACCOUNTING_EMAIL','E-mail address for the financial manager<br /><div class=\"small\">Who receives the notification that invoices have been sent?</div>','','text',110,'en_US','2017-07-26 13:24:47','2017-07-26 13:24:47'),
@@ -92,7 +92,6 @@ INSERT INTO `fcs_configuration` VALUES
 (552,1,'FCS_DELIVERY_DETAILS_FOR_MANUFACTURERS','Additional deliverey details for manufacturers<br /><div class=\"small\">will be shown in the order lists after the delivery date.</div>',', 3pm to 5pm','text',120,'en_US','2017-07-26 13:24:47','2017-07-26 13:24:47'),
 (553,1,'FCS_BACKUP_EMAIL_ADDRESS_BCC','E-mail adress to which all automatically generated e-mail are sent to as BCC (Backup).<br /><div class=\"small\">Can be left empty.</div>','','text',190,'en_US','2016-10-06 00:00:00','2016-10-06 00:00:00'),
 (554,1,'FCS_SHOW_FOODCOOPSHOP_BACKLINK','Show link to www.foodcoopshop.com?<br /><div class=\"small\">The link is shown in the footer.</div>','1','boolean',180,'en_US','2016-11-27 00:00:00','2016-11-27 00:00:00'),
-(555,1,'FCS_PAYMENT_PRODUCT_MAXIMUM','Max. amount of every credit upload.','500','number',127,'en_US','2016-11-28 00:00:00','2016-11-28 00:00:00'),
 (556,1,'FCS_APP_NAME','Name of the food-coop','','text',5,'en_US','2017-01-12 00:00:00','2017-01-12 00:00:00'),
 (557,1,'FCS_APP_ADDRESS','Adress of the food-coop<br /><div class=\"small\">Used in footer of homepage and e-mails, privacy policy and terms of use.</div>','','textarea',6,'en_US','2017-01-12 00:00:00','2017-01-12 00:00:00'),
 (558,1,'FCS_APP_EMAIL','E-mail adress of the food-coop<br /><div class=\"small\"></div>','','text',7,'en_US','2017-01-12 00:00:00','2017-01-12 00:00:00'),
@@ -110,7 +109,14 @@ INSERT INTO `fcs_configuration` VALUES
 (573,1,'FCS_TIMEBASED_CURRENCY_MAX_CREDIT_BALANCE_MANUFACTURER','Paying-with-time: Overdraft frame for manufacturers<br /><div class=\"small\">How many positive hours are allowed maximal for manufacturers?</div>','100','number',250,'en_US','2018-03-16 15:23:34','2018-03-16 15:23:34'),
 (574,1,'FCS_SHOW_PRODUCT_PRICE_FOR_GUESTS','Shop product price for guests??','0','boolean',21,'en_US','2018-05-28 18:05:54','2018-05-28 18:05:54'),
 (575,1,'FCS_CURRENCY_SYMBOL','Currency symbol','$','readonly',52,'en_US','2018-06-13 19:53:14','2018-06-13 19:53:14'),
-(576,1,'FCS_DEFAULT_LOCALE','Language','en_US','readonly',55,'en_US','2018-06-26 10:18:55','2018-06-26 10:18:55');
+(576,1,'FCS_DEFAULT_LOCALE','Language','en_US','readonly',55,'en_US','2018-06-26 10:18:55','2018-06-26 10:18:55'),
+(577,1,'FCS_FOODCOOPS_MAP_ENABLED','Show map with other foodcoops on home?','1','boolean',128,'en_US','2019-02-11 22:25:36','2019-02-11 22:25:36'),
+(578,1,'FCS_WEEKLY_PICKUP_DAY','Weekly pickup day','5','readonly',60,'en_US','2019-02-18 12:38:00','2019-02-18 12:38:00'),
+(579,1,'FCS_DEFAULT_SEND_ORDER_LISTS_DAY_DELTA','Sending of order lists: x days before pickup day','2','readonly',65,'en_US','2019-02-18 12:38:00','2019-02-18 12:38:00'),
+(580,1,'FCS_ORDER_POSSIBLE_FOR_STOCK_PRODUCTS_IN_ORDERS_WITH_DELIVERY_RHYTHM','Allow weekly orders for stock products?','1','boolean',75,'en_US','2019-02-18 12:38:00','2019-02-18 12:38:00'),
+(581,1,'FCS_SHOW_NON_STOCK_PRODUCTS_IN_INSTANT_ORDERS','Only show stock products in instant orders?','0','boolean',76,'en_US','2019-02-18 12:38:00','2019-02-18 12:38:00');
+(582,1,'FCS_INCLUDE_STOCK_PRODUCTS_IN_INVOICES','Include stock products in invoices?','1','readonly',60,'en_US','2019-02-18 12:38:00','2019-02-18 12:38:00'),
+(583,1,'FCS_REGISTRATION_NOTIFICATION_EMAILS','Who should be notified on new registrations?<br /><div class=\"small\">Please separate multiple e-mail addresses with , (no space).</div>','','text',55,'en_US','2019-03-05 20:01:59','2019-03-05 20:01:59');
 /*!40000 ALTER TABLE `fcs_configuration` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `fcs_cronjob_logs` DISABLE KEYS */;
@@ -203,7 +209,7 @@ INSERT INTO `fcs_tax` VALUES
 
 /*!40000 ALTER TABLE `phinxlog` DISABLE KEYS */;
 INSERT INTO `phinxlog` VALUES
-(20180213193116,'InitPhinxlog','2018-08-01 07:31:03','2018-08-01 07:31:03',0),
+(20180213193116,'InitPhinxlog','2018-08-01 07:27:56','2018-08-01 07:27:56',0),
 (20180213193117,'Migration018','2018-02-13 16:49:03','2018-02-13 16:49:04',0),
 (20180213193123,'Migration019','2018-02-13 16:49:04','2018-02-13 16:49:04',0),
 (20180213193133,'Migration020','2018-02-13 16:49:04','2018-02-13 16:49:04',0),
@@ -218,9 +224,9 @@ INSERT INTO `phinxlog` VALUES
 (20180613174031,'CurrencySymbolAsConfiguration','2018-06-25 06:55:19','2018-06-25 06:55:19',0),
 (20180626080524,'AddLocaleToDatabaseConfig','2018-06-27 06:00:47','2018-06-27 06:00:47',0),
 (20180702075300,'RenameShopOrderToInstantOrder','2018-07-02 07:23:18','2018-07-02 07:23:18',0),
-(20180717100910,'ProductTablesOptimization','2018-08-01 07:31:15','2018-08-01 07:31:15',0),
-(20180720130810,'RemoveOrdersTable','2018-08-01 07:31:44','2018-08-01 07:31:44',0),
-(20180727070325,'CorrectBicLength','2018-08-01 07:31:44','2018-08-01 07:31:44',0),
+(20180717100910,'ProductTablesOptimization','2018-08-01 07:28:57','2018-08-01 07:28:57',0),
+(20180720130810,'RemoveOrdersTable','2018-08-01 07:28:57','2018-08-01 07:28:57',0),
+(20180727070325,'CorrectBicLength','2018-08-01 07:28:57','2018-08-01 07:28:57',0),
 (20180814121543,'ImprovedStockManagement','2018-08-14 14:57:53','2018-08-14 14:57:53',0),
 (20180827074035,'AdditionalOrderPeriods','2018-08-27 08:28:29','2018-08-27 08:28:29',0),
 (20181001120127,'UpdatePasswordHashingMethod','2018-08-27 08:28:29','2018-08-27 08:28:29',0),
@@ -228,7 +234,12 @@ INSERT INTO `phinxlog` VALUES
 (20181018125456,'Cronjobs','2018-08-27 08:28:29','2018-08-27 08:28:29',0),
 (20181027192224,'BootstrapUpdate','2018-10-27 08:28:29','2018-10-27 08:28:29',0),
 (20181029212405,'CorrectNetPrice','2018-10-29 08:28:29','2018-10-29 08:28:29',0),
-(20181226215706,'NoDeliveryDaysDefaultNull','2018-12-26 08:28:29','2018-12-26 08:28:29',0);
+(20181226215706,'NoDeliveryDaysDefaultNull','2018-12-26 08:28:29','2018-12-26 08:28:29',0),
+(20190114095502,'Fontawesome5','2019-01-14 00:00:00','2019-01-14 00:00:00',0),
+(20190211210824,'AddFoodCoopShopInstancesMap','2019-02-11 21:25:36','2019-02-11 21:25:36',0),
+(20190218101915,'IndividualSendOrderListDay','2019-02-18 11:38:00','2019-02-18 11:38:00',0),
+(20190219104144,'StockProductOrderManagement','2019-02-19 21:25:36','2019-02-11 21:25:36',0),
+(20190305183508,'ConfigurationOptimizations','2019-03-05 19:01:59','2019-03-05 19:01:59',0);
 /*!40000 ALTER TABLE `phinxlog` ENABLE KEYS */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

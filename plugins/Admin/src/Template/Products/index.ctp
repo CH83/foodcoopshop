@@ -97,7 +97,7 @@ use Cake\Core\Configure;
                         'script' => Configure::read('app.jsNamespace') . ".Admin.initAddProduct('#products');"
                     ]);
                     echo '<div id="add-product-button-wrapper" class="add-button-wrapper">';
-                    echo $this->Html->link('<i class="fa fa-plus-square fa-lg"></i> ' . __d('admin', 'Add_product'), 'javascript:void(0);', [
+                    echo $this->Html->link('<i class="fas fa-plus-circle"></i> ' . __d('admin', 'Add_product'), 'javascript:void(0);', [
                         'class' => 'btn btn-outline-light',
                         'escape' => false
                     ]);
@@ -110,7 +110,7 @@ use Cake\Core\Configure;
                     ]);
                     echo '<div class="toggle-sync-button-wrapper">';
                         echo $this->Html->link(
-                            '<i class="fa fa-arrow-circle-right"></i> ' . __d('admin', 'Synchronize_products'),
+                            '<i class="fas fa-arrow-circle-right"></i> ' . __d('admin', 'Synchronize_products'),
                             $this->Network->getSyncProductData(),
                             [
                                 'class' => 'btn btn-outline-light',
@@ -141,6 +141,9 @@ use Cake\Core\Configure;
     echo '<table class="list no-clone-last-row">';
 
     echo '<tr class="sort">';
+        echo $this->element('rowMarker/rowMarkerAll', [
+            'enabled' => !empty($products)
+        ]);
         echo '<th class="hide">ID</th>';
         echo '<th>'.__d('admin', 'Attribute').'</th>';
         echo '<th>' . $this->Paginator->sort('Images.id_image', __d('admin', 'Image')) . '</th>';
@@ -151,9 +154,9 @@ use Cake\Core\Configure;
         if ($advancedStockManagementEnabled) {
             echo '<th>' . $this->Paginator->sort('Products.is_stock_product', __d('admin', 'Stock_product')) . '</th>';
         }
-        echo '<th>'.__d('admin', 'Amount').'</th>';
+        echo '<th style="width:62px;">'.__d('admin', 'Amount').'</th>';
         echo '<th>'.__d('admin', 'Price').'</th>';
-        echo '<th>' . $this->Paginator->sort('Taxes.rate', __d('admin', 'Tax_rate')) . '</th>';
+        echo '<th style="width:70px;">' . $this->Paginator->sort('Taxes.rate', __d('admin', 'Tax_rate')) . '</th>';
         echo '<th class="center" style="width:69px;">' . $this->Paginator->sort('Products.created', __d('admin', 'New?')) . '</th>';
         echo '<th>'.__d('admin', 'Deposit').'</th>';
         echo '<th>' . $this->Paginator->sort('Products.delivery_rhythm_type', __d('admin', 'Delivery_rhythm')) . '</th>';
@@ -167,6 +170,10 @@ use Cake\Core\Configure;
 
         echo '<tr id="product-' . $product->id_product . '" class="data ' . $product->row_class . '" data-manufacturer-id="'.(isset($product->id_manufacturer) ? $product->id_manufacturer : '').'">';
 
+        echo $this->element('rowMarker/rowMarker', [
+            'show' => (!empty($product->product_attributes) || isset($product->product_attributes)) && !($advancedStockManagementEnabled && $product->is_stock_product)
+        ]);
+        
         echo $this->element('productList/data/id', [
             'product' => $product
         ]);
@@ -242,7 +249,14 @@ use Cake\Core\Configure;
     echo '</tr>';
 
     echo '</table>';
-    ?>    
+    
+    echo '<div class="bottom-button-container">';
+        echo $this->element('productList/button/editDeliveryRhythmForSelectedProducts', [
+            'products' => $products
+        ]);
+    echo '</div>';
+    
+    ?>
     
     <div class="sc"></div>
     
@@ -273,6 +287,11 @@ use Cake\Core\Configure;
             'type' => 'select',
             'label' => '',
             'options' => $this->Html->getDeliveryRhythmTypesForDropdown()
+        ]);
+        echo $this->Form->control('Weekdays', [
+            'type' => 'select',
+            'label' => '',
+            'options' => $this->Time->getSendOrderListsWeekdayOptions()
         ]);
     echo '</div>';
     

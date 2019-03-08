@@ -86,7 +86,8 @@ class LocalizedController extends Controller
                 'CurrencySymbol' => Configure::read('appDb.FCS_CURRENCY_SYMBOL'),
                 'CurrencyName' => Configure::read('app.currencyName'),
                 'ShowMore' => __('Show_more'),
-                'ShowLess' => __('Show_less')
+                'ShowLess' => __('Show_less'),
+                'Close' => __('Close')
             ],
             'cart' => [
                 'routeCart' => __('route_cart'),
@@ -149,8 +150,8 @@ class LocalizedController extends Controller
                 'DoNotCancelButton' => __('Do_not_cancel_button'),
                 'PleaseOnlyCancelIfOkForManufacturer' => __('Please_only_cancel_if_ok_for_manufacturer!'),
                 'ReallyCancelSelectedProducts' => __('Really_cancel_selected_products?'),
-                'YouSelectedOneProductForCancellation' => __('You_selected_1_product_for_cancellation'),
-                'YouSelected0ProductsForCancellation' => __('You_selected_{0}_products_for_cancellation'),
+                'YouSelectedOneProduct' => __('You_selected_1_product'),
+                'YouSelected0Products' => __('You_selected_{0}_products'),
                 'AdaptAmountReasonIsMandatory' => __('Adapt_amount_reason_is_mandatory.'),
                 'DeliveredWeightNeedsToBeGreaterThan0' => __('Delivered_weight_needs_to_be_greater_than_0.'),
                 'AdaptPriceReasonIsMandatory' => __('Adapt_price_reason_is_mandatory.'),
@@ -256,11 +257,16 @@ class LocalizedController extends Controller
                 'DeliveryRhythm' => __('Delivery_rhythm'),
                 'FirstDeliveryDay' => __('First_delivery_day'),
                 'DeliveryDay' => __('Delivery_day'),
-                'FirstDeliveryDayInfo' => __('First_delivery_day_info.'),
+                'FirstDeliveryDayInfoOneProduct' => __('First_delivery_day_info_(one_product).'),
+                'FirstDeliveryDayInfoMultipleProducts' => __('First_delivery_day_info_(multiple_products).'),
                 'canBeLeftBlank' => __('can_be_left_blank'),
                 'OrderPossibleUntil' => __('Order_possible_until'),
                 'InfoPageForDeliveryRhythm' => __('Info_page_for_delivery_rhythm'),
                 'DocsUrlOrderHandling' => Configure::read('app.htmlHelper')->getDocsUrl(__('docs_route_order_handling')),
+                'LastOrderWeekday' => __('Last_order_weekday'),
+                'SendOrderListsDay' => __('Send_order_lists_day'),
+                'OrderListsAreSentAutomaticallyNextDayInTheMorning' => __('Order_lists_are_sent_automatically_next_day_in_the_morning.'),
+                'OrderListsAreSentAutomaticallyOnThisDay' => __('Order_lists_are_sent_automatically_on_this_day.'),
             ],
             'upload' => [
                 'delete' => __('delete'),

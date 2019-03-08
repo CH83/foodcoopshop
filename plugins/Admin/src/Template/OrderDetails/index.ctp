@@ -76,7 +76,7 @@ use Cake\Core\Configure;
             <?php echo $this->Form->control('groupBy', ['type'=>'select', 'label' =>'', 'empty' => __d('admin', 'Group_by...'), 'options' => $groupByForDropdown, 'default' => $groupBy]);?>
             <div class="right">
         	<?php
-        	if (Configure::read('app.isDepositPaymentCashless') && $groupBy == '' && $customerId > 0 && count($orderDetails) > 0) {
+        	if (Configure::read('app.isDepositPaymentCashless') && $groupBy == '' && $customerId > 0 && count($orderDetails) > 0 && (!$appAuth->isCustomer() || Configure::read('app.isCustomerAllowedToModifyOwnOrders'))) {
                 echo '<div class="add-payment-deposit-button-wrapper">';
                     echo $this->element('addDepositPaymentOverlay', [
                         'buttonText' => (!$isMobile ? __d('admin', 'Deposit_return') : ''),
@@ -87,7 +87,7 @@ use Cake\Core\Configure;
                     ]);
                 echo '</div>';
             }
-            if (!$appAuth->isManufacturer()) {
+            if (!$appAuth->isManufacturer() && ($appAuth->isAdmin() || $appAuth->isSuperadmin() || (!$appAuth->isCustomer() || Configure::read('app.isCustomerAllowedToModifyOwnOrders')))) {
                 echo $this->element('addInstantOrderButton', [
                     'customers' => $customersForInstantOrderDropdown
                 ]);
@@ -112,16 +112,10 @@ if (count($orderDetails) == 0) {
 
 echo '<table class="list">';
 echo '<tr class="sort">';
-    echo '<th style="width:20px;">';
-    if (count($orderDetails) > 0 && $groupBy == '') {
-        $this->element('addScript', [
-        'script' => Configure::read('app.jsNamespace') . ".Admin.initRowMarkerAll();"
-        ]);
-        echo '<input type="checkbox" id="row-marker-all" />';
-    }
-    echo '</th>';
-    echo '<th class="hide">' . $this->Paginator->sort('OrderDetails.detail_order_id', 'ID') . '</th>';
-    
+    echo $this->element('rowMarker/rowMarkerAll', [
+        'enabled' => count($orderDetails) > 0 && $groupBy == ''
+    ]);
+    echo '<th class="hide">ID</th>';
     $orderDetailTemplateElement = 'default';
     if ($groupBy != '') {
         $orderDetailTemplateElement = 'groupBy' . ucfirst($groupBy);
@@ -134,7 +128,7 @@ foreach ($orderDetails as $orderDetail) {
     
     $editRecordAllowed = $groupBy == '' && (
         in_array($orderDetail->order_state, [ORDER_STATE_ORDER_PLACED, ORDER_STATE_ORDER_LIST_SENT_TO_MANUFACTURER]) ||
-        $orderDetail->bulkOrdersAllowed);
+        $orderDetail->bulkOrdersAllowed) && (!$appAuth->isCustomer() || Configure::read('app.isCustomerAllowedToModifyOwnOrders'));
 
     $rowClasses = [];
     if (isset($orderDetail->row_class)) {
@@ -146,11 +140,9 @@ foreach ($orderDetails as $orderDetail) {
     
     echo '<tr class="data ' . (!empty($rowClasses) ? implode(' ', $rowClasses) : '') . '">';
 
-    echo '<td style="text-align: center;">';
-        if ($editRecordAllowed) {
-            echo '<input type="checkbox" class="row-marker" />';
-        }
-    echo '</td>';
+    echo $this->element('rowMarker/rowMarker', [
+        'show' => $editRecordAllowed
+    ]);
 
     echo $this->element('orderDetailList/data/id', [
         'orderDetail' => $orderDetail,
@@ -240,12 +232,15 @@ if ($groupBy == 'manufacturer') {
 if ($groupBy == 'customer') {
     $showAllOrderDetailsLink = '';
     if (!empty($orderDetails)) {
-        $showAllOrderDetailsLink = $this->Html->getJqueryUiIcon($this->Html->image($this->Html->getFamFamFamPath('cart.png')) . (!$isMobile ? ' ' . __d('admin', 'All_products') : ''),
+        
+        $showAllOrderDetailsLink = $this->Html->link(
+            '<i class="fas fa-shopping-cart ok"></i>' . (!$isMobile ? ' ' . __d('admin', 'All_products') : ''),
+            '/admin/order-details/index/?pickupDay[]=' . join(',', $pickupDay) . '&productId=' . $productId. '&manufacturerId=' . $manufacturerId,
             [
+                'class' => 'btn btn-outline-light',
                 'title' => __d('admin', 'Show_all_ordered_products'),
-                'class' => 'icon-with-text'
-            ],
-            '/admin/order-details/index/?pickupDay[]=' . join(',', $pickupDay) . '&productId=' . $productId. '&manufacturerId=' . $manufacturerId
+                'escape' => false
+            ]
         );
     }
     echo '<td></td>';
@@ -270,7 +265,10 @@ if ($groupBy != 'customer') {
     }
     echo '<td class="right"><b>' . $sumDepositString . '</b></td>';
 } else {
-    echo '<td></td><td></td>';
+    echo '<td></td>';
+    if (count($pickupDay) == 1) {
+        echo '<td></td>';
+    }
 }
 if ($groupBy == '') {
     $sumUnitsString = $this->PricePerUnit->getStringFromUnitSums($sums['units'], '<br />');

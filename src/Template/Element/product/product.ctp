@@ -17,6 +17,13 @@ use Cake\Core\Configure;
 
 $showProductPrice = (Configure::read('appDb.FCS_SHOW_PRODUCTS_FOR_GUESTS') && Configure::read('appDb.FCS_SHOW_PRODUCT_PRICE_FOR_GUESTS')) || $appAuth->user();
 
+$isStockProductOrderPossibleInOrdersWithDeliveryRhythms = $this->Html->isStockProductOrderPossibleInOrdersWithDeliveryRhythms(
+    $this->request->getSession()->check('Auth.instantOrderCustomer'),
+    Configure::read('appDb.FCS_ORDER_POSSIBLE_FOR_STOCK_PRODUCTS_IN_ORDERS_WITH_DELIVERY_RHYTHM'),
+    $product['stock_management_enabled'],
+    $product['is_stock_product']
+);
+
 echo '<div class="product-wrapper">';
 
     echo '<div class="first-column">';
@@ -31,7 +38,7 @@ if (!$largeImageExists) {
 }
 if ($product['is_new']) {
     echo '<a href="'.$this->Slug->getNewProducts().'" class="image-badge btn btn-success" title="'.__('New').'">
-                    <i class="fa fa-star gold"></i> '.__('New').'
+                    <i class="fas fa-star gold"></i> '.__('New').'
                 </a>';
 }
     echo '</div>';
@@ -63,6 +70,15 @@ if ($product['description'] != '') {
     if ($product['delivery_rhythm_type'] == 'individual' && !$this->Time->isDatabaseDateNotSet($product['delivery_rhythm_order_possible_until'])) {
         echo '<br />' . __('Order_possible_until') . ': ' . $this->Time->getDateFormattedWithWeekday(strtotime($product['delivery_rhythm_order_possible_until']));
     }
+    
+    if (!$this->request->getSession()->check('Auth.instantOrderCustomer') && $product['delivery_rhythm_type'] != 'individual' && $this->Time->getSendOrderListsWeekday() != $product['delivery_rhythm_send_order_list_weekday']) {
+        echo '<span class="last-order-day">';
+            echo __('Last_order_day') . ': <b>' . $this->Time->getWeekdayName(
+                $this->Time->getNthWeekdayBeforeWeekday(1, $product['delivery_rhythm_send_order_list_weekday'])
+            ) . '</b> ' . __('midnight');
+        echo '</span>';
+    }
+    
     echo '<br />'.__('Pickup_day').': ';
     echo '<span class="pickup-day">';
         if ($this->request->getSession()->check('Auth.instantOrderCustomer')) {
@@ -81,12 +97,14 @@ if ($product['description'] != '') {
     );
 
     if ($appAuth->isSuperadmin() || ($appAuth->isManufacturer() && $product['id_manufacturer'] == $appAuth->getManufacturerId())) {
-        echo $this->Html->getJqueryUiIcon(
-            $this->Html->image($this->Html->getFamFamFamPath('page_edit.png')),
+        echo $this->Html->link(
+            '<i class="fas fa-pencil-alt"></i>',
+            $this->Slug->getProductAdmin(($appAuth->isSuperadmin() ? $product['id_manufacturer'] : null), $product['id_product']),
             [
-                'title' => __('Edit_product')
-            ],
-            $this->Slug->getProductAdmin(($appAuth->isSuperadmin() ? $product['id_manufacturer'] : null), $product['id_product'])
+                'class' => 'btn btn-outline-light edit-shortcut-button',
+                'title' => __('Edit'),
+                'escape' => false
+            ]
         );
     }
 
@@ -163,9 +181,20 @@ if ($product['description'] != '') {
             }
             if (! Configure::read('appDb.FCS_SHOW_PRODUCTS_FOR_GUESTS') || $appAuth->user()) {
                 echo $this->element('product/hiddenProductIdField', ['productId' => $product['id_product'] . '-' . $attribute['ProductAttributes']['id_product_attribute']]);
-                echo $this->element('product/amountWrapper', ['stockAvailable' => $attribute['StockAvailables']]);
-                echo $this->element('product/cartButton', ['productId' => $product['id_product'] . '-' . $attribute['ProductAttributes']['id_product_attribute'], 'stockAvailableQuantity' => $attribute['StockAvailables']['quantity'], 'stockAvailableQuantityLimit' => $attribute['StockAvailables']['quantity_limit']]);
+                echo $this->element('product/amountWrapper', [
+                    'stockAvailable' => $attribute['StockAvailables'],
+                    'hideAmountSelector' => $isStockProductOrderPossibleInOrdersWithDeliveryRhythms
+                ]);
+                echo $this->element('product/cartButton', [
+                    'productId' => $product['id_product'] . '-' . $attribute['ProductAttributes']['id_product_attribute'],
+                    'stockAvailableQuantity' => $attribute['StockAvailables']['quantity'],
+                    'stockAvailableQuantityLimit' => $attribute['StockAvailables']['quantity_limit'],
+                    'hideButton' => $isStockProductOrderPossibleInOrdersWithDeliveryRhythms
+                ]);
                 echo $this->element('product/notAvailableInfo', ['stockAvailable' => $attribute['StockAvailables']]);
+                echo $this->element('product/includeStockProductsInOrdersWithDeliveryRhythmInfoText', [
+                    'showInfoText' => $isStockProductOrderPossibleInOrdersWithDeliveryRhythms
+                ]);
             }
             if ($showProductPrice) {
                 echo $pricePerUnitInfoText;
@@ -219,11 +248,23 @@ if ($product['description'] != '') {
                 }
                 echo '<div class="tax">'. $this->Number->formatAsCurrency($product['tax']) . '</div>';
         }
+        
         if (! Configure::read('appDb.FCS_SHOW_PRODUCTS_FOR_GUESTS') || $appAuth->user()) {
             echo $this->element('product/hiddenProductIdField', ['productId' => $product['id_product']]);
-            echo $this->element('product/amountWrapper', ['stockAvailable' => $product]);
-            echo $this->element('product/cartButton', ['productId' => $product['id_product'], 'stockAvailableQuantity' => $product['quantity'], 'stockAvailableQuantityLimit' => $product['quantity_limit']]);
+            echo $this->element('product/amountWrapper', [
+                'stockAvailable' => $product,
+                'hideAmountSelector' => $isStockProductOrderPossibleInOrdersWithDeliveryRhythms
+            ]);
+            echo $this->element('product/cartButton', [
+                'productId' => $product['id_product'],
+                'stockAvailableQuantity' => $product['quantity'],
+                'stockAvailableQuantityLimit' => $product['quantity_limit'],
+                'hideButton' => $isStockProductOrderPossibleInOrdersWithDeliveryRhythms
+            ]);
             echo $this->element('product/notAvailableInfo', ['stockAvailable' => $product]);
+            echo $this->element('product/includeStockProductsInOrdersWithDeliveryRhythmInfoText', [
+                'showInfoText' => $isStockProductOrderPossibleInOrdersWithDeliveryRhythms
+            ]);
         }
         if ($showProductPrice) {
             echo $pricePerUnitInfoText;

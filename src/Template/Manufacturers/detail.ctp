@@ -58,12 +58,14 @@ if (Configure::read('appDb.FCS_SHOW_PRODUCTS_FOR_GUESTS') || $appAuth->user()) {
     }
 
     if (isset($manufacturerEditSlug)) {
-        echo $this->Html->getJqueryUiIcon(
-            $this->Html->image($this->Html->getFamFamFamPath('page_edit.png')),
+        echo $this->Html->link(
+            '<i class="fas fa-pencil-alt"></i>',
+            $manufacturerEditSlug,
             [
-                'title' => __('Edit')
-            ],
-            $manufacturerEditSlug
+                'class' => 'btn btn-outline-light edit-shortcut-button',
+                'title' => __('Edit'),
+                'escape' => false
+            ]
         );
     }
     ?>
@@ -71,7 +73,7 @@ if (Configure::read('appDb.FCS_SHOW_PRODUCTS_FOR_GUESTS') || $appAuth->user()) {
 </div>
 
 <?php
-if ($blogPosts->count() > 0) {
+if (!empty($blogPosts)) {
     echo '<h2>' . __('News_from') .  ' '.$manufacturer->name.'</a><a style="float: right;margin-top: 5px;" class="btn btn-outline-light" href="'.$this->Slug->getManufacturerBlogList($manufacturer->id_manufacturer, $manufacturer->name).'">' . __('Go_to_blog_from') . ' ' . $manufacturer->name.'</a></h2><div class="sc"></div>';
     echo $this->element('blogPosts', [
     'blogPosts' => $blogPosts
@@ -82,6 +84,8 @@ $manufacturerNoDeliveryDaysString = $this->Html->getManufacturerNoDeliveryDaysSt
 if ($manufacturerNoDeliveryDaysString != '') {
     echo '<h2 class="info">'.$manufacturerNoDeliveryDaysString.'</h2>';
 }
+
+echo $this->element('stockProductInListInfo');
 
 if (!empty($manufacturer['Products'])) {
     foreach ($manufacturer['Products'] as $product) {

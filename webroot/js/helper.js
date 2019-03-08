@@ -30,6 +30,19 @@ foodcoopshop.Helper = {
         }
     },
     
+    getUniqueHtmlValueOfDomElements: function(domElements, defaultValue) {
+        var values = this.unique(
+            $.map($(domElements),
+                function(element) {
+                    return $(element).html();
+            })
+        );
+        if (values.length > 1) {
+            values = defaultValue;
+        }
+        return values;
+    },
+    
     /**
      * $.unique does not work with strings
      */
@@ -65,8 +78,8 @@ foodcoopshop.Helper = {
             responsiveClass: true,
             nav: true,
             navText: [
-                '<i class="fa fa-arrow-circle-o-left fa-3x"></i>',
-                '<i class="fa fa-arrow-circle-o-right fa-3x"></i>'
+                '<i class="far fa-arrow-alt-circle-left fa-3x"></i>',
+                '<i class="far fa-arrow-alt-circle-right fa-3x"></i>'
             ],
             responsive: {
                 320: {
@@ -119,7 +132,15 @@ foodcoopshop.Helper = {
 
     initLoginForm: function () {
         $('#LoginForm button[type="submit"]').on('click', function () {
-            foodcoopshop.Helper.addSpinnerToButton($(this), 'fa-sign-in');
+            foodcoopshop.Helper.addSpinnerToButton($(this), 'fa-sign-in-alt');
+            foodcoopshop.Helper.disableButton($(this));
+            $(this).closest('form').submit();
+        });
+    },
+
+    initSearchForm: function () {
+        $('#product-search button[type="submit"]').on('click', function () {
+            foodcoopshop.Helper.addSpinnerToButton($(this), 'fa-search');
             foodcoopshop.Helper.disableButton($(this));
             $(this).closest('form').submit();
         });
@@ -221,7 +242,22 @@ foodcoopshop.Helper = {
                 $('#scroll-to-top').fadeOut();
             }
         });
+        
+        $('#scroll-to-top a').on('click', function () {
+            $('body,html').animate({
+                scrollTop: 0
+            }, 400);
+            return false;
+        });
 
+        $('#scroll-to-top a').mouseenter(function () {
+            $(this).children('i').removeClass('fas');
+            $(this).children('i').addClass('far');
+        }).mouseleave(function () {
+            $(this).children('i').removeClass('far');
+            $(this).children('i').addClass('fas');
+        });
+        
         $('#scroll-to-top a').on('click', function () {
             $('body,html').animate({
                 scrollTop: 0
@@ -299,12 +335,12 @@ foodcoopshop.Helper = {
 
     addSpinnerToButton: function (button, iconClass) {
         button.find('i').removeClass(iconClass);
-        button.find('i').addClass('fa-spinner');
+        button.find('i').addClass('fa-circle-notch');
         button.find('i').addClass('fa-spin');
     },
 
     removeSpinnerFromButton: function (button, iconClass) {
-        button.find('i').removeClass('fa-spinner');
+        button.find('i').removeClass('fa-circle-notch');
         button.find('i').removeClass('fa-spin');
         button.find('i').addClass(iconClass);
     },
@@ -408,7 +444,7 @@ foodcoopshop.Helper = {
 
     initAnystretch: function () {
         $.backstretch(
-            '/img/bg-v2.3.jpg',
+            '/img/bg-v2.4.jpg',
             {
                 positionY: 'top',
                 transitionDuration: 400
@@ -529,7 +565,7 @@ foodcoopshop.Helper = {
 
         this.destroyCkeditor(name);
 
-        CKEDITOR.timestamp = 'v4.11.1';
+        CKEDITOR.timestamp = 'v4.11.2';
         $('textarea#' + name + '.ckeditor').ckeditor({
             customConfig: '/js/ckeditor/config.js'
         });
@@ -557,7 +593,7 @@ foodcoopshop.Helper = {
 
         this.destroyCkeditor(name);
 
-        CKEDITOR.timestamp = 'v4.11.1';
+        CKEDITOR.timestamp = 'v4.11.2';
         $('textarea#' + name + '.ckeditor').ckeditor({
             customConfig: '/js/ckeditor/config-big.js'
         });
@@ -572,7 +608,7 @@ foodcoopshop.Helper = {
 
         this.destroyCkeditor(name);
 
-        CKEDITOR.timestamp = 'v4.11.1';
+        CKEDITOR.timestamp = 'v4.11.2';
         $('textarea#' + name + '.ckeditor').ckeditor({
             customConfig: '/js/ckeditor/config-small-with-upload.js'
         });
@@ -674,7 +710,7 @@ foodcoopshop.Helper = {
     },
 
     appendFlashMessageCloser: function () {
-        $('#flashMessage').prepend('<a class="closer" title="Schließen" href="javascript:void(0);"><img height="16" width="16" src="/node_modules/famfamfam-silk/dist/png/cancel.png" /></a>');
+        $('#flashMessage').prepend('<a class="closer" title="' + foodcoopshop.LocalizedJs.helper.Close + '" href="javascript:void(0);"><i class="far fa-times-circle"></i></a>');
     },
 
     bindFlashMessageCloser: function () {

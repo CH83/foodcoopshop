@@ -79,7 +79,7 @@ INSERT INTO `fcs_configuration` VALUES
 (164,1,'FCS_CUSTOMER_GROUP','Welcher Gruppe sollen neu registrierte Mitglieder zugewiesen werden?','3','dropdown',40,'de_DE','2017-07-26 13:24:47','2017-07-26 13:24:47'),
 (456,1,'FCS_FOOTER_CMS_TEXT','Zusätzlicher Text für den Footer',NULL,'textarea_big',80,'de_DE','2014-06-11 17:50:55','2016-07-01 21:47:47'),
 (508,1,'FCS_FACEBOOK_URL','Facebook-Url für die Einbindung im Footer','https://www.facebook.com/FoodCoopShop/','text',90,'de_DE','2015-07-08 13:23:54','2015-07-08 13:23:54'),
-(538,1,'FCS_REGISTRATION_EMAIL_TEXT','Zusätzlicher Text, der in der Bestätigungsmail nach einer Registrierung versendet wird. <br /> <a href=\"/admin/configurations/previewEmail/FCS_REGISTRATION_EMAIL_TEXT\" target=\"_blank\"><img src=\"/node_modules/famfamfam-silk/dist/png/information.png?1483041252\" alt=\"\"> E-Mail-Vorschau anzeigen</a>','','textarea_big',170,'de_DE','2016-06-26 00:00:00','2016-06-26 00:00:00'),
+(538,1,'FCS_REGISTRATION_EMAIL_TEXT','Zusätzlicher Text, der in der Bestätigungsmail nach einer Registrierung versendet wird. <br /> <a href=\"/admin/configurations/previewEmail/FCS_REGISTRATION_EMAIL_TEXT\" target=\"_blank\"><i class=\"fas fa-info-circle\"></i> E-Mail-Vorschau anzeigen</a>','','textarea_big',170,'de_DE','2016-06-26 00:00:00','2016-06-26 00:00:00'),
 (543,1,'FCS_RIGHT_INFO_BOX_HTML','Inhalt der Box in der rechten Spalte unterhalb des Warenkorbes. <br /><div class=\"small\">Um eine Zeile grün zu hinterlegen (Überschrift) bitte als \"Überschrift 3\" formatieren.</div>','<h3>Abholzeiten</h3>\r\n\r\n<p>Der Abholtag steht jetzt immer in der Produktbeschreibung, du kannst deine Produkte am Freitag abholen.</p>\r\n\r\n<p>Du kannst jede Woche bis sp&auml;testens Dienstag Mitternacht bestellen und sie am darauffolgenden Freitag abholen.</p>\r\n','textarea_big',150,'de_DE','2017-07-26 13:24:47','2017-07-26 13:24:47'),
 (544,1,'FCS_CART_ENABLED','Ist die Bestell-Funktion aktiviert?<br /><div class=\"small\">Falls die Foodcoop mal Urlaub macht, kann das Bestellen hier deaktiviert werden.</div>','1','boolean',10,'de_DE','2017-07-26 13:24:47','2017-07-26 13:24:47'),
 (545,1,'FCS_ACCOUNTING_EMAIL','E-Mail-Adresse des Finanzverantwortlichen<br /><div class=\"small\">Wer bekommt die Benachrichtigung über den erfolgten Rechnungsversand?</div>','','text',110,'de_DE','2017-07-26 13:24:47','2017-07-26 13:24:47'),
@@ -92,7 +92,6 @@ INSERT INTO `fcs_configuration` VALUES
 (552,1,'FCS_DELIVERY_DETAILS_FOR_MANUFACTURERS','Zusätzliche Liefer-Informationen für die Hersteller<br /><div class=\"small\">wird in den Bestell-Listen nach dem Lieferdatum angezeigt.</div>',', 15:00 bis 17:00 Uhr','text',120,'de_DE','2017-07-26 13:24:47','2017-07-26 13:24:47'),
 (553,1,'FCS_BACKUP_EMAIL_ADDRESS_BCC','E-Mail-Adresse, an die sämtliche vom System generierten E-Mails als BCC verschickt werden (Backup).<br /><div class=\"small\">Kann leer gelassen werden.</div>','','text',190,'de_DE','2016-10-06 00:00:00','2016-10-06 00:00:00'),
 (554,1,'FCS_SHOW_FOODCOOPSHOP_BACKLINK','Auf Homepage Link auf www.foodcoopshop.com anzeigen?<br /><div class=\"small\">Der Link wird im Footer angezeigt.</div>','1','boolean',180,'de_DE','2016-11-27 00:00:00','2016-11-27 00:00:00'),
-(555,1,'FCS_PAYMENT_PRODUCT_MAXIMUM','Maximalbetrag für jede Guthaben-Aufladung in Euro','500','number',127,'de_DE','2016-11-28 00:00:00','2016-11-28 00:00:00'),
 (556,1,'FCS_APP_NAME','Name der Foodcoop','','text',5,'de_DE','2017-01-12 00:00:00','2017-01-12 00:00:00'),
 (557,1,'FCS_APP_ADDRESS','Adresse der Foodcoop<br /><div class=\"small\">Wird im Footer von Homepage und E-Mails, Datenschutzerklärung, Nutzungsbedingungen usw. verwendet.</div>','','textarea',6,'de_DE','2017-01-12 00:00:00','2017-01-12 00:00:00'),
 (558,1,'FCS_APP_EMAIL','E-Mail-Adresse der Foodcoop<br /><div class=\"small\"></div>','','text',7,'de_DE','2017-01-12 00:00:00','2017-01-12 00:00:00'),
@@ -110,7 +109,14 @@ INSERT INTO `fcs_configuration` VALUES
 (573,1,'FCS_TIMEBASED_CURRENCY_MAX_CREDIT_BALANCE_MANUFACTURER','Stundenabrechnung: Überziehungsrahmen für Hersteller<br /><div class=\"small\">Wie viele Stunden kann ein Hersteller maximal ins Plus gehen?</div>','100','number',250,'de_DE','2018-03-16 15:23:34','2018-03-16 15:23:34'),
 (574,1,'FCS_SHOW_PRODUCT_PRICE_FOR_GUESTS','Produktpreis für nicht eingeloggte Mitglieder anzeigen?','0','boolean',21,'de_DE','2018-05-28 18:05:54','2018-05-28 18:05:54'),
 (575,1,'FCS_CURRENCY_SYMBOL','Währungssymbol','€','readonly',52,'de_DE','2018-06-13 19:53:14','2018-06-13 19:53:14'),
-(576,1,'FCS_DEFAULT_LOCALE','Sprache','de_DE','readonly',55,'de_DE','2018-06-26 10:18:55','2018-06-26 10:18:55');
+(576,1,'FCS_DEFAULT_LOCALE','Sprache','de_DE','readonly',55,'de_DE','2018-06-26 10:18:55','2018-06-26 10:18:55'),
+(577,1,'FCS_FOODCOOPS_MAP_ENABLED','Auf Home Karte mit anderen Foodcoops anzeigen?','1','boolean',128,'de_DE','2019-02-11 22:25:36','2019-02-11 22:25:36'),
+(578,1,'FCS_WEEKLY_PICKUP_DAY','Wöchentlicher Abholtag','5','readonly',60,'de_DE','2019-02-18 12:38:00','2019-02-18 12:38:00'),
+(579,1,'FCS_DEFAULT_SEND_ORDER_LISTS_DAY_DELTA','Bestelllisten-Versand: x Tage vor dem Abholtag','2','readonly',65,'de_DE','2019-02-18 12:38:00','2019-02-18 12:38:00'),
+(580,1,'FCS_ORDER_POSSIBLE_FOR_STOCK_PRODUCTS_IN_ORDERS_WITH_DELIVERY_RHYTHM','Sollen Lagerprodukte mit der wöchentlichen Bestellung bestellt werden können?','1','boolean',75,'de_DE','2019-02-18 12:38:00','2019-02-18 12:38:00'),
+(581,1,'FCS_SHOW_NON_STOCK_PRODUCTS_IN_INSTANT_ORDERS','In der Sofort-Bestellung ausschließlich Lagerprodukte anzeigen?','0','boolean',76,'de_DE','2019-02-18 12:38:00','2019-02-18 12:38:00'),
+(582,1,'FCS_INCLUDE_STOCK_PRODUCTS_IN_INVOICES','Lagerprodukte in Rechnungen miteinbeziehen?','1','readonly',60,'de_DE','2019-02-18 12:38:00','2019-02-18 12:38:00'),
+(583,1,'FCS_REGISTRATION_NOTIFICATION_EMAILS','Wer soll bei neuen Registrierungen informiert werden?<br /><div class=\"small\">Mehrere E-Mail-Adressen mit , (ohne Leerzeichen) trennen.</div>','','text',55,'de_DE','2019-03-05 20:01:59','2019-03-05 20:01:59');
 /*!40000 ALTER TABLE `fcs_configuration` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `fcs_cronjob_logs` DISABLE KEYS */;
@@ -228,7 +234,12 @@ INSERT INTO `phinxlog` VALUES
 (20181018125456,'Cronjobs','2018-08-27 08:28:29','2018-08-27 08:28:29',0),
 (20181027192224,'BootstrapUpdate','2018-10-27 08:28:29','2018-10-27 08:28:29',0),
 (20181029212405,'CorrectNetPrice','2018-10-29 08:28:29','2018-10-29 08:28:29',0),
-(20181226215706,'NoDeliveryDaysDefaultNull','2018-12-26 08:28:29','2018-12-26 08:28:29',0);
+(20181226215706,'NoDeliveryDaysDefaultNull','2018-12-26 08:28:29','2018-12-26 08:28:29',0),
+(20190114095502,'Fontawesome5','2019-01-14 00:00:00','2019-01-14 00:00:00',0),
+(20190211210824,'AddFoodCoopShopInstancesMap','2019-02-11 21:25:36','2019-02-11 21:25:36',0),
+(20190218101915,'IndividualSendOrderListDay','2019-02-18 11:38:00','2019-02-18 11:38:00',0),
+(20190219104144,'StockProductOrderManagement','2019-02-19 21:25:36','2019-02-11 21:25:36',0),
+(20190305183508,'ConfigurationOptimizations','2019-03-05 19:01:59','2019-03-05 19:01:59',0);
 /*!40000 ALTER TABLE `phinxlog` ENABLE KEYS */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

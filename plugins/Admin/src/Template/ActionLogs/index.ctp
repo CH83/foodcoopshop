@@ -98,7 +98,7 @@ foreach ($actionLogs as $actionLog) {
     if (isset($name)) {
         echo $this->Html->link(
             $name,
-            '/admin/action-logs/index/?types[]='.join(',', $types).'&productId='.$productId.'&customerId='.($actionLog->customer ? $actionLog->customer->id_customer : '').'&dateFrom='.$dateFrom.'&dateTo='.$dateTo.(!empty($this->request->getQuery('sort')) ? '&sort='.$this->request->getQuery('sort') : '').(!empty($this->request->getQuery('direction')) ? '&direction='.$this->request->getQuery('direction') : '')
+            '/admin/action-logs/index/?types[]='.join('&types[]=', $types).'&productId='.$productId.'&customerId='.($actionLog->customer ? $actionLog->customer->id_customer : '').'&dateFrom='.$dateFrom.'&dateTo='.$dateTo.(!empty($this->request->getQuery('sort')) ? '&sort='.$this->request->getQuery('sort') : '').(!empty($this->request->getQuery('direction')) ? '&direction='.$this->request->getQuery('direction') : '')
         );
     }
     echo '</td>';
@@ -158,10 +158,16 @@ foreach ($actionLogs as $actionLog) {
     }
 
     if ($showLink) {
-        echo $this->Html->getJqueryUiIcon($this->Html->image($this->Html->getFamFamFamPath('arrow_right.png')), [
-            'title' => $title,
-            'target' => $targetBlank ? '_blank' : ''
-        ], $url);
+        echo $this->Html->link(
+            '<i class="fas fa-arrow-right ok"></i>',
+            $url,
+            [
+                'class' => 'btn btn-outline-light',
+                'title' => $title,
+                'target' => $targetBlank ? '_blank' : '',
+                'escape' => false
+            ]
+        );
     }
     echo '</td>';
 

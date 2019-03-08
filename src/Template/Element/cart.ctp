@@ -41,9 +41,9 @@ if ($appAuth->Cart->getProducts() !== null) {
 <div id="cart" class="box cart">
     
     <h3>
-    	<i class="fa fa-shopping-cart"></i>
+    	<i class="fas fa-shopping-cart"></i>
     	<?php echo __('Cart'); ?>
-    	<a class="question" href="<?php echo $this->Html->getDocsUrl(__('docs_route_order_handling')); ?>"><i class="fa fa-question-circle"></i></a>
+    	<a class="question" href="<?php echo $this->Html->getDocsUrl(__('docs_route_order_handling')); ?>"><i class="far fa-question-circle"></i></a>
 	</h3>
     
     <div class="inner">
@@ -71,7 +71,10 @@ if ($appAuth->Cart->getProducts() !== null) {
                     Configure::read('app.jsNamespace').".Helper.initLogoutInstantOrderCustomerButton();"
                 ]);
                 echo '<p class="instant-order-customer-info">';
-                    echo __('This_order_will_be_placed_for_{0}', ['<b>'.$this->request->getSession()->read('Auth.instantOrderCustomer')->name.'</b>']);
+                    echo __('This_order_will_be_placed_for_{0}.', ['<b>'.$this->request->getSession()->read('Auth.instantOrderCustomer')->name.'</b>']);
+                    if (Configure::read('appDb.FCS_SHOW_NON_STOCK_PRODUCTS_IN_INSTANT_ORDERS')) {
+                        echo ' ' . __('Only_stock_products_are_shown.');
+                    }
                 echo '<b><a class="btn btn-outline-light" href="javascript:void(0);">'.__('Cancel_instant_order?').'</a></b>';
                 echo '</p>';
 
@@ -108,7 +111,7 @@ if ($appAuth->Cart->getProducts() !== null) {
             <div class="sc"></div>
             
             <p><a class="btn btn-success" href="<?php echo $this->Slug->getCartDetail(); ?>">
-                <i class="fa fa-shopping-cart fa-lg"></i> <?php echo __('Show_cart_button'); ?>
+                <i class="fas fa-shopping-cart fa-lg"></i> <?php echo __('Show_cart_button'); ?>
             </a></p>
             
         <?php } ?>

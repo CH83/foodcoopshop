@@ -139,7 +139,7 @@ body.categories.detail div.description-wrapper {
 .vertical.menu a {
     padding: 3px 10px;
 }
-.vertical.menu a i.fa {
+.vertical.menu a i.fas {
     font-size: 13px;
     width: auto;
     top: 7px;
@@ -477,6 +477,9 @@ body.superadmin .product-wrapper .heading h4 {
     float: left;
     width: 100%;
 }
+.product-wrapper .line p {
+	margin-bottom: 0px;
+}
 .product-wrapper label.attribute-button input {
 	margin-right: 3px;
 	margin-top: 3px;
@@ -795,7 +798,9 @@ body.carts.detail #load-last-order-details,
     padding: 4px 8px;
     font-size: 13px;
 }
-
+.edit-shortcut-button {
+	padding: 0px 4px;
+}
 .entity-wrapper .btn,
 #cart .btn-success {
     padding-top: 6px;
@@ -1025,10 +1030,8 @@ body.carts.detail .cart:not(#cart) .btn-success.btn-order {
 }
 #product-search .btn {
     padding: 6px 10px;
-    margin-left: -3px;
-    padding-top: 7px;
-    margin-top: -1px;
     border-radius: 0;
+    float: right;
 }
 
 .blog-wrapper {
@@ -1125,26 +1128,19 @@ body.pages.detail #inner-content,
 body.manufacturers.detail #inner-content {
     position: relative;
 }
-body.blog_posts ul.jquery-ui-icon,
-body.pages.detail ul.jquery-ui-icon,
-body.manufacturers.detail .manufacturer-infos ul.jquery-ui-icon {
-    top: -15px;
-    right: 5px;
+body.blog_posts a.edit-shortcut-button,
+body.pages.detail a.edit-shortcut-button,
+body.manufacturers.detail .manufacturer-infos a.edit-shortcut-button {
+    top: -17px;
+    right: 3px;
     position: absolute;
 }
-.product-wrapper .second-column ul.jquery-ui-icon {
+.product-wrapper .second-column a.edit-shortcut-button {
   position: absolute;
   top: 0;
   right: 5px;
 }
 
-ul.jquery-ui-icon li {
-    line-height: 16px ! important;
-}
-body.blog_posts.index .second-column ul.jquery-ui-icon {
-    right: 5px;
-    top: 2px;
-}
 body.blog_posts.detail #inner-content ul {
     clear: both;
 }
@@ -1159,7 +1155,6 @@ body.categories.detail .blog-wrapper {
     margin-left: auto;
     margin-right: auto;
 }
-body.carts.order_successful #inner-content h2,
 body.blog_posts.detail #inner-content h2,
 body.customers.registration_successful #inner-content h2 {
     border-bottom: 1px solid #d6d4d4;

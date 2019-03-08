@@ -70,10 +70,18 @@ return [
         'cookieKey' => '',
 
         /**
-         * defines how many days after the sendOrderListsWeekday the products are delivered
-         * sendOrderListsWeekday is defined in config.php and preset to 3, i.e. "wednesday"
+         * not used since v2.4
+         * deliveryDayDelta is replaced by the new database setting FCS_DEFAULT_SEND_ORDER_LISTS_DAY_DELTA
+         * and can be removed in your custom_config.php after successful migration of 20190218101915_IndividualSendOrderListDay.php
          */
-        'deliveryDayDelta' => 2,
+        //'deliveryDayDelta' => 2,
+        
+        'discourseSsoEnabled' => false,
+
+        /**
+         * A random string used for Discourse SSO
+         */
+        'discourseSsoSecret' => '',
 
         /**
          * optional: message that is displayed in the dialog where order-detail status can be changed (/admin/order-details)
@@ -86,9 +94,11 @@ return [
         'cakeServerName' => '',
 
         /**
-         * array of email adresses that receive notifications after new member registrations
+         * not used since v2.4
+         * registrationNotificationEmails is replaced by the new database setting FCS_REGISTRATION_NOTIFICATION_EMAILS
+         * and can be removed in your custom_config.php after successful migration of 20190305183508_ConfigurationOptimizations.php
          */
-        'registrationNotificationEmails' => [],
+        //'registrationNotificationEmails' => [],
 
         /**
          * whether to apply a member fee to the members account balance

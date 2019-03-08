@@ -32,7 +32,7 @@ class ProductsControllerTest extends AppCakeTestCase
         $this->loginAsSuperadmin();
         $productId = 60;
         $status = APP_OFF;
-        $this->browser->get('/admin/products/changeStatus/' . $productId . '/' . $status);
+        $this->httpClient->get('/admin/products/changeStatus/' . $productId . '/' . $status);
         $product = $this->Product->find('all', [
             'conditions' => [
                 'Products.id_product' => $productId
@@ -46,7 +46,7 @@ class ProductsControllerTest extends AppCakeTestCase
         $this->loginAsSuperadmin();
         $price = 'invalid-price';
         $this->changeProductPrice(346, $price);
-        $response = $this->browser->getJsonDecodedContent();
+        $response = $this->httpClient->getJsonDecodedContent();
         $this->assertRegExpWithUnquotedString('input format not correct: ' . $price, $response->msg);
         $this->assertJsonError();
     }
@@ -211,6 +211,14 @@ class ProductsControllerTest extends AppCakeTestCase
         $this->assertJsonOk();
     }
     
+    public function testEditDeliveryRhythmIndividualInvalidSendOrderListDay()
+    {
+        $this->loginAsSuperadmin();
+        $response = $this->changeProductDeliveryRhythm(346, '0-individual', '2018-08-31', '2018-08-28', 2, '2019-01-01');
+        $this->assertRegExpWithUnquotedString('Das Datum für den Bestellisten-Versand muss zwischen Bestellbar-bis-Datum und dem Liefertag liegen.', $response->msg);
+        $this->assertJsonError();
+    }
+    
     public function testEditDeliveryRhythmOkWithDatabaseAsserts()
     {
         $productId = 346;
@@ -225,6 +233,14 @@ class ProductsControllerTest extends AppCakeTestCase
         $this->assertEquals($product->delivery_rhythm_type, 'month');
         $this->assertEquals($product->delivery_rhythm_count, 1);
         $this->assertEquals($product->delivery_rhythm_first_delivery_day->i18nFormat(Configure::read('app.timeHelper')->getI18Format('DateLong2')), '03.08.2018');
+    }
+    
+    public function testEditDeliveryRhythmWeeklyInvalidSendOrderListsWeekday()
+    {
+        $this->loginAsSuperadmin();
+        $response = $this->changeProductDeliveryRhythm(346, '1-week', '', '', 15);
+        $this->assertRegExpWithUnquotedString('Bitte gib eine Zahl zwischen 0 und 6 an.', $response->msg);
+        $this->assertJsonError();
     }
     
     /**

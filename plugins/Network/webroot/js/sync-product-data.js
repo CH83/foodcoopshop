@@ -87,7 +87,9 @@ foodcoopshop.SyncProductData = {
                 delivery_rhythm_type: 'delivery_rhythm_type',
                 delivery_rhythm_count: 'delivery_rhythm_count',
                 delivery_rhythm_first_delivery_day: 'delivery_rhythm_first_delivery_day',
-                delivery_rhythm_order_possible_until: 'delivery_rhythm_order_possible_until'
+                delivery_rhythm_order_possible_until: 'delivery_rhythm_order_possible_until',
+                delivery_rhythm_order_send_order_list_weekday: 'delivery_rhythm_order_send_order_list_weekday',
+                delivery_rhythm_order_send_order_list_day: 'delivery_rhythm_order_send_order_list_day'
             },
             column: 8
         },
@@ -226,11 +228,13 @@ foodcoopshop.SyncProductData = {
                             product.delivery_rhythm_type,
                             product.delivery_rhythm_count,
                             product.delivery_rhythm_first_delivery_day,
-                            product.delivery_rhythm_order_possible_until
+                            product.delivery_rhythm_order_possible_until,
+                            product.last_order_weekday,
+                            product.delivery_rhythm_send_order_list_day
                         );
                 }
             tableData += '</td>';
-                tableData += '<td class="active">' + (!isAttribute ? (product.active ? '<i class="fa fa-check ok"></i>' : '<i class="fa fa-close not-ok"></i>') : '') + '</td>';
+                tableData += '<td class="active">' + (!isAttribute ? (product.active ? '<i class="fas fa-check ok"></i>' : '<i class="fas fa-times not-ok"></i>') : '') + '</td>';
                 tableData += '</tr>';
 
                 if (product.prepared_sync_products) {
@@ -506,7 +510,7 @@ foodcoopshop.SyncProductData = {
                     }
                     
                     // active
-                    var remoteActive = (!isAttribute ? (product.active ? '<i class="fa fa-check ok"></i>' : '<i class="fa fa-close not-ok"></i>') : '');
+                    var remoteActive = (!isAttribute ? (product.active ? '<i class="fas fa-check ok"></i>' : '<i class="fas fa-times not-ok"></i>') : '');
                     $(this).find('td.active').html(remoteActive);
                     foodcoopshop.SyncProductData.doIsAttributeDirtyActions('td.active', product.active, localProduct.active, $(this), localProductRow);
 

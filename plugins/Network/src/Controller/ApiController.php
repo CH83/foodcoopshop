@@ -48,7 +48,7 @@ class ApiController extends Controller
                     'finder' => 'auth' // CustomersTable::findAuth
                 ]
             ],
-            // stateless suthentication
+            // stateless authentication
             'unauthorizedRedirect' => false,
             'storage' => 'Memory'
         ]
@@ -57,16 +57,25 @@ class ApiController extends Controller
     public function beforeFilter(Event $event)
     {
 
+        // enables basic authentication with php in cgi mode
+        if (isset($_SERVER['HTTP_AUTHORIZATION']))
+        {
+            $ha = base64_decode( substr($_SERVER['HTTP_AUTHORIZATION'],6) );
+            if (isset($ha[0]) && isset($ha[1])) {
+                list($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']) = explode(':', $ha);
+            }
+        }
+        
         $this->RequestHandler->renderAs($this, 'json');
 
-        $this->getRequest()->allowMethod(['get', 'post', 'delete', 'options']);
-        $this->setResponse($this->getResponse()->withHeader('Access-Control-Allow-Origin', '*'));
-        $this->setResponse($this->getResponse()->withHeader('Access-Control-Allow-Methods', '*'));
-        $this->setResponse($this->getResponse()->withHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization'));
-
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
+        header('Access-Control-Allow-Headers: Content-Type, Authorization');
+        
         if ($this->getRequest()->is('options')) {
             return $this->getResponse();
         }
+        
     }
 
     public function isAuthorized($user)

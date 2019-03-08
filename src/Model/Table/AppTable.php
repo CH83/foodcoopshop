@@ -34,7 +34,7 @@ class AppTable extends Table
     public function initialize(array $config)
     {
         $this->setTable($this->tablePrefix . $this->getTable());
-        // simple browser needs special header HTTP_X_UNIT_TEST_MODE => set in AppCakeTestCase::initSimpleBrowser()
+        // HttpClient needs special header HTTP_X_UNIT_TEST_MODE => set in AppCakeTestCase::initHttpClient()
         if (isset($_SERVER['HTTP_X_UNIT_TEST_MODE'])
             || (php_sapi_name() == 'cli' && $_SERVER['argv'][0] && preg_match('/phpunit/', $_SERVER['argv'][0]))) {
             $this->setConnection(ConnectionManager::get('test'));
@@ -137,13 +137,13 @@ class AppTable extends Table
     protected function getFieldsForProductListQuery()
     {
         $fields = "Products.id_product,
-                Products.name, Products.description_short, Products.description, Products.unity, Products.price, Products.created,
+                Products.name, Products.description_short, Products.description, Products.unity, Products.price, Products.created, Products.is_stock_product,
                 Products.delivery_rhythm_type, Products.delivery_rhythm_count, Products.delivery_rhythm_first_delivery_day, Products.delivery_rhythm_order_possible_until,
-                Products.is_stock_product,
+                Products.delivery_rhythm_send_order_list_weekday, Products.delivery_rhythm_send_order_list_day,
                 Deposits.deposit,
                 Images.id_image,
                 Manufacturers.id_manufacturer, Manufacturers.name as ManufacturersName,
-                Manufacturers.timebased_currency_enabled, Manufacturers.no_delivery_days,
+                Manufacturers.timebased_currency_enabled, Manufacturers.no_delivery_days, Manufacturers.stock_management_enabled,
                 Units.price_per_unit_enabled, Units.price_incl_per_unit, Units.name as unit_name, Units.amount as unit_amount, Units.quantity_in_units,
                 StockAvailables.quantity, StockAvailables.quantity_limit";
 
@@ -180,6 +180,14 @@ class AppTable extends Table
         if (! $this->getLoggedUser()) {
             $conditions .= 'AND Manufacturers.is_private = :isPrivate ';
         }
+        
+        if (Configure::read('appDb.FCS_SHOW_NON_STOCK_PRODUCTS_IN_INSTANT_ORDERS')) {
+            $session = new AppSession();
+            if ($session->check('Auth.instantOrderCustomer')) {
+                $conditions .= " AND (Manufacturers.stock_management_enabled = 1 AND Products.is_stock_product = 1) ";
+            }
+        }
+        
         return $conditions;
     }
 
@@ -206,10 +214,12 @@ class AppTable extends Table
                         'delivery_rhythm_first_delivery_day' => $product['delivery_rhythm_first_delivery_day'] == '' ? null : new FrozenDate($product['delivery_rhythm_first_delivery_day']),
                         'delivery_rhythm_type' => $product['delivery_rhythm_type'],
                         'delivery_rhythm_count' => $product['delivery_rhythm_count'],
+                        'delivery_rhythm_send_order_list_weekday' => $product['delivery_rhythm_send_order_list_weekday'],
+                        'delivery_rhythm_send_order_list_day' => $product['delivery_rhythm_send_order_list_day'],
                         'is_stock_product' => $product['is_stock_product']
                     ]
-                    )
-                );
+                )
+            );
             
             // hides the product if manufacturer has enabled delivery break
             if ($this->Product->deliveryBreakEnabled($product['no_delivery_days'], $deliveryDate)) {

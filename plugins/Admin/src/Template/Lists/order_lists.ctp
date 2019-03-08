@@ -31,13 +31,17 @@ use Cake\Core\Configure;
             <?php echo __d('admin', 'Pickup_day'); ?> <?php echo $this->element('dateFields', ['dateFrom' => $dateFrom, 'showDateTo' => false, 'nameFrom' => 'dateFrom']); ?>
             <div class="right">
             <?php
-                echo $this->element('headerIcons', ['helperLink' => $this->Html->getDocsUrl(__d('admin', 'docs_route_products'))]);
+                echo $this->element('headerIcons', ['helperLink' => $this->Html->getDocsUrl(__d('admin', 'docs_route_pick_up_products'))]);
             ?>
             </div>
         <?php echo $this->Form->end(); ?>
     </div>
     
     <?php
+    echo '<h2 class="info2">';
+        echo __d('admin', 'Here_you_find_the_unchanged_order_lists_that_were_sent_to_the_manufacturers.');
+    echo '</h2>';
+
     echo '<table class="list">';
 
     echo '<tr class="sort">';
@@ -62,19 +66,29 @@ use Cake\Core\Configure;
         echo '</td>';
 
         echo '<td>';
-        echo $this->Html->getJqueryUiIcon($this->Html->image($this->Html->getFamFamFamPath('zoom.png')) . ' ' . __d('admin', 'Show_list_(grouped_by_product)'), [
-            'title' => __d('admin', 'Show_list_(grouped_by_product)'),
-            'target' => '_blank',
-            'class' => 'icon-with-text'
-        ], $file['product_list_link']);
+        echo $this->Html->link(
+            '<i class="fas fa-search ok"></i> ' . __d('admin', 'Show_list_(grouped_by_product)'),
+            $file['product_list_link'],
+            [
+                'class' => 'btn btn-outline-light',
+                'target' => '_blank',
+                'title' => __d('admin', 'Show_list_(grouped_by_product)'),
+                'escape' => false
+            ]
+        );
         echo '</td>';
 
         echo '<td>';
-        echo $this->Html->getJqueryUiIcon($this->Html->image($this->Html->getFamFamFamPath('zoom.png')) . ' ' . __d('admin', 'Show_list_(grouped_by_member)'), [
-            'title' => __d('admin', 'Show_list_(grouped_by_member)'),
-            'target' => '_blank',
-            'class' => 'icon-with-text'
-        ], $file['customer_list_link']);
+        echo $this->Html->link(
+            '<i class="fas fa-search ok"></i> ' . __d('admin', 'Show_list_(grouped_by_member)'),
+            $file['customer_list_link'],
+            [
+                'class' => 'btn btn-outline-light',
+                'target' => '_blank',
+                'title' => __d('admin', 'Show_list_(grouped_by_member)'),
+                'escape' => false
+            ]
+        );
         echo '</td>';
 
         echo '</tr>';

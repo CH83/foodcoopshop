@@ -252,7 +252,7 @@ class CustomersController extends FrontendController
             // http://stackoverflow.com/questions/8472/practical-non-image-based-captcha-approaches?lq=1
             if (!empty($this->getRequest()->getData()) && ($this->getRequest()->getData('antiSpam') == 'lalala' || $this->getRequest()->getData('antiSpam') < 3)) {
                 $this->Flash->error('S-p-a-m-!');
-                $this->redirect(Configure::read('app.slugHelper')->getLogin());
+                $this->redirect('/');
                 return;
             }
 
@@ -322,10 +322,10 @@ class CustomersController extends FrontendController
                     // END send confirmation email to customer
 
                     // START send notification email
-                    if (! empty(Configure::read('app.registrationNotificationEmails'))) {
+                    if (! empty(Configure::read('appDb.FCS_REGISTRATION_NOTIFICATION_EMAILS'))) {
                         $email = new AppEmail();
                         $email->viewBuilder()->setTemplate('customer_registered_notification');
-                        $email->setTo(Configure::read('app.registrationNotificationEmails'))
+                        $email->setTo(explode(',', Configure::read('appDb.FCS_REGISTRATION_NOTIFICATION_EMAILS')))
                             ->setSubject(__('New_registration_{0}', [$newCustomer->firstname . ' ' . $newCustomer->lastname]))
                             ->setViewVars([
                             'appAuth' => $this->AppAuth,

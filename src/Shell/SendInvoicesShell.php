@@ -39,7 +39,7 @@ class SendInvoicesShell extends AppShell
 
         // $this->cronjobRunDay can is set in unit test
         if (!isset($this->args[0])) {
-            $this->cronjobRunDay = Configure::read('app.timeHelper')->getCurrentDateTimeForDatabase();
+            $this->cronjobRunDay = Configure::read('app.timeHelper')->getCurrentDateForDatabase();
         } else {
             $this->cronjobRunDay = $this->args[0];
         }
@@ -84,11 +84,11 @@ class SendInvoicesShell extends AppShell
             ]
         ]);
         
-        if (!Configure::read('app.includeStockProductsInInvoices')) {
+        if (!Configure::read('appDb.FCS_INCLUDE_STOCK_PRODUCTS_IN_INVOICES')) {
             $orderDetails->where(function ($exp, $query) {
                 return $exp->or_([
-                    'Products.is_stock_product' => false,
-                    'Manufacturers.stock_management_enabled' => false
+                    'Products.is_stock_product' => 0, // do not use "false" here!
+                    'Manufacturers.stock_management_enabled' => 0 // do not use "false" here!
                 ]);
             });
         }
@@ -113,12 +113,14 @@ class SendInvoicesShell extends AppShell
         $i = 0;
         $outString = $dateFrom . ' ' . __('to_(time_context)') . ' ' . $dateTo . '<br />';
 
-        $this->initSimpleBrowser();
-        $this->browser->doFoodCoopShopLogin();
+        $this->initHttpClient();
+        $this->httpClient->doFoodCoopShopLogin();
 
         $tableData = '';
         $sumPrice = 0;
+        
         foreach ($manufacturers as $manufacturer) {
+            
             $sendInvoice = $this->Manufacturer->getOptionSendInvoice($manufacturer->send_invoice);
             $invoiceNumber = $this->Manufacturer->Invoices->getNextInvoiceNumber($manufacturer->invoices);
             $invoiceLink = '/admin/lists/getInvoice?file=' . str_replace(
@@ -126,7 +128,9 @@ class SendInvoicesShell extends AppShell
                     $manufacturer->name, $manufacturer->id_manufacturer, Configure::read('app.timeHelper')->formatToDbFormatDate($this->cronjobRunDay), $invoiceNumber
                 )
             );
+            
             if (!empty($manufacturer->current_order_count)) {
+                
                 $price = $manufacturer->order_detail_price_sum;
                 $sumPrice += $price;
                 $variableMemberFeeAsString = '';
@@ -145,18 +149,25 @@ class SendInvoicesShell extends AppShell
                 $tableData .= '<td>' . $productString . '</td>';
                 $tableData .= '<td align="right"><b>' . Configure::read('app.numberHelper')->formatAsCurrency($price) . '</b>'.$variableMemberFeeAsString.'</td>';
                 $tableData .= '<td>';
-                    $tableData .= Configure::read('app.htmlHelper')->getJqueryUiIcon(Configure::read('app.htmlHelper')->image(Configure::read('app.htmlHelper')->getFamFamFamPath('arrow_right.png')), [
-                        'target' => '_blank'
-                    ], $invoiceLink);
+                    $tableData .= Configure::read('app.htmlHelper')->link(
+                        '<i class="fas fa-arrow-right ok"></i>',
+                        $invoiceLink,
+                        [
+                            'class' => 'btn btn-outline-light',
+                            'target' => '_blank',
+                            'escape' => false
+                        ]
+                    );
                 $tableData .= '</td>';
                 $tableData .= '</tr>';
+                
+                $url = $this->httpClient->adminPrefix . '/manufacturers/sendInvoice?manufacturerId=' . $manufacturer->id_manufacturer . '&dateFrom=' . $dateFrom . '&dateTo=' . $dateTo;
+                $this->httpClient->get($url);
                 $i ++;
-            }
-            if (!empty($manufacturer->current_order_count) && $sendInvoice) {
-                $url = $this->browser->adminPrefix . '/manufacturers/sendInvoice?manufacturerId=' . $manufacturer->id_manufacturer . '&dateFrom=' . $dateFrom . '&dateTo=' . $dateTo;
-                $this->browser->get($url);
+                
             }
         }
+        
         if ($tableData != '') {
             $outString .= '<table class="list no-clone-last-row">';
             $outString .= '<tr>';
@@ -172,7 +183,7 @@ class SendInvoicesShell extends AppShell
             $outString .= '</table>';
         }
         
-        $this->browser->doFoodCoopShopLogout();
+        $this->httpClient->doFoodCoopShopLogout();
 
         // START send email to accounting employee
         $accountingEmail = Configure::read('appDb.FCS_ACCOUNTING_EMAIL');
@@ -194,7 +205,7 @@ class SendInvoicesShell extends AppShell
 
         $this->stopTimeLogging();
 
-        $this->ActionLog->customSave('cronjob_send_invoices', $this->browser->getLoggedUserId(), 0, '', $outString . '<br />' . $this->getRuntime(), new Time($this->cronjobRunDay));
+        $this->ActionLog->customSave('cronjob_send_invoices', $this->httpClient->getLoggedUserId(), 0, '', $outString . '<br />' . $this->getRuntime(), new Time($this->cronjobRunDay));
 
         $this->out($outString);
 

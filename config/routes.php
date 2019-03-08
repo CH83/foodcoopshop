@@ -65,8 +65,10 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/'.__('route_request_new_password'), ['controller' => 'Customers', 'action' => 'newPasswordRequest']);
     $routes->connect('/'.__('route_activate_new_password').'/*', ['controller' => 'Customers', 'action' => 'activateNewPassword']);
 
-    $routes->connect('/'.__('route_news_list'), ['controller' => 'BlogPosts', 'action' => 'index']);
-    $routes->connect('/'.__('route_news_detail').'/*', ['controller' => 'BlogPosts', 'action' => 'detail']);
+    if (Configure::read('app.isBlogFeatureEnabled')) {
+        $routes->connect('/'.__('route_news_list'), ['controller' => 'BlogPosts', 'action' => 'index']);
+        $routes->connect('/'.__('route_news_detail').'/*', ['controller' => 'BlogPosts', 'action' => 'detail']);
+    }
     $routes->connect('/'.__('route_search').'/*', ['controller' => 'Categories', 'action' => 'search']);
     $routes->connect('/'.__('route_category').'/*', ['controller' => 'Categories', 'action' => 'detail']);
     $routes->connect('/'.__('route_product').'/*', ['controller' => 'Products', 'action' => 'detail']);
@@ -78,6 +80,10 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/'.__('route_cart').'/'.__('route_cart_finish'), ['controller' => 'Carts', 'action' => 'finish']);
     $routes->connect('/'.__('route_cart').'/'.__('route_cart_finished').'/*', ['controller' => 'Carts', 'action' => 'orderSuccessful']);
     $routes->connect('/'.__('route_cart').'/:action/*', ['controller' => 'Carts']);
+
+    if (Configure::read('app.discourseSsoEnabled')) {
+        $routes->connect('/discourse/sso', ['controller' => 'Pages', 'action' => 'discourseSso']);
+    }
 
     $routes->connect('/js/localized-javascript', ['controller' => 'Localized', 'action' => 'renderAsJsFile'])->setExtensions(['js']);
 

@@ -51,7 +51,9 @@ class FileAndEmailLog extends FileLog
             '{"passwd_old',
             '{"passwd_1',
             '{"passwd_2',
-            '{"email":{"unique":'
+            '{"email":{"unique"',
+            '{"email":{"exists"',
+            '{"delivery_rhythm_',
         ];
         $ignoredExceptionsRegex = '/('.join('|', $ignoredPatterns).')/';
         if (preg_match($ignoredExceptionsRegex, $message)) {

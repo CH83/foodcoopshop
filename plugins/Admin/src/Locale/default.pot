@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2018-12-14 19:56+0100\n"
+"POT-Creation-Date: 2019-03-02 20:39+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -206,6 +206,9 @@ msgstr ""
 msgid "Invoice_number_abbreviataion_{0}_{1}"
 msgstr ""
 
+msgid "No_orders_within_the_given_time_range."
+msgstr ""
+
 msgid "Order_lists_successfully_generated_for_manufacturer_{0}."
 msgstr ""
 
@@ -222,9 +225,6 @@ msgid "The_settings_of_manufacturer_{0}_have_been_changed."
 msgstr ""
 
 msgid "Your_settings_have_been_changed."
-msgstr ""
-
-msgid "No_orders_within_the_given_time_range."
 msgstr ""
 
 msgid "No_member_found_with_id_{0}."
@@ -377,7 +377,16 @@ msgstr ""
 msgid "A_new_product_was_created_for_{0}."
 msgstr ""
 
-msgid "The_delivery_rhythm_of_the_product_{0}_from_manufacturer_{1}_was_changed_successfully_to_{2}."
+msgid "Order_possible_until"
+msgstr ""
+
+msgid "Send_order_lists_day"
+msgstr ""
+
+msgid "Last_order_weekday"
+msgstr ""
+
+msgid "midnight"
 msgstr ""
 
 msgid "Delivery_day"
@@ -386,7 +395,10 @@ msgstr ""
 msgid "First_delivery_day"
 msgstr ""
 
-msgid "Order_possible_until"
+msgid "The_delivery_rhythm_of_the_product_{0}_from_manufacturer_{1}_was_changed_successfully_to_{2}."
+msgstr ""
+
+msgid "Delivery_rhythm_of_{0}_products_has_been_changed_successfully_to_{1}."
 msgstr ""
 
 msgid "Saving_successful."
@@ -728,9 +740,6 @@ msgstr ""
 msgid "Last_executed_migration"
 msgstr ""
 
-msgid "Pickup_day"
-msgstr ""
-
 msgid "Software_update_version"
 msgstr ""
 
@@ -884,6 +893,9 @@ msgstr ""
 msgid "Copy_all_email_addresses"
 msgstr ""
 
+msgid "Delete_deposit_take_back?"
+msgstr ""
+
 msgid "docs_route_deposit"
 msgstr ""
 
@@ -906,6 +918,9 @@ msgid "Product_with_deposit_delivered"
 msgstr ""
 
 msgid "Empty_glasses_returned"
+msgstr ""
+
+msgid "Details"
 msgstr ""
 
 msgid "Show_details"
@@ -996,6 +1011,9 @@ msgid "Please_chose_the_months_for_your_payment."
 msgstr ""
 
 msgid "Delivery_days"
+msgstr ""
+
+msgid "Pickup_day"
 msgstr ""
 
 msgid "Pickup_days"
@@ -1128,6 +1146,9 @@ msgid "Order_day"
 msgstr ""
 
 msgid "Order_list_grouped_by"
+msgstr ""
+
+msgid "Edit_delivery_rhythm_for_selected_products"
 msgstr ""
 
 msgid "Add_new_attribute_for_product_{0}"
@@ -1370,6 +1391,9 @@ msgstr ""
 msgid "Your_contact_person"
 msgstr ""
 
+msgid "Here_you_find_the_unchanged_order_lists_that_were_sent_to_the_manufacturers."
+msgstr ""
+
 msgid "Order_list_by_product"
 msgstr ""
 
@@ -1523,7 +1547,7 @@ msgstr ""
 msgid "The_manufacturer_wants"
 msgstr ""
 
-msgid "to_receive_the_orders_per_email_on_{0}."
+msgid "to_receive_the_orders_per_email."
 msgstr ""
 
 msgid "CC_recipient_for_order_lists"
@@ -1866,6 +1890,9 @@ msgid "e.g._10_for_10%"
 msgstr ""
 
 msgid "Tax_rates_can_not_be_changed_later."
+msgstr ""
+
+msgid "Delete"
 msgstr ""
 
 msgid "Show_product"

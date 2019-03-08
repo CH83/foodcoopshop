@@ -130,12 +130,21 @@ foodcoopshop.Admin = {
         return orderDetailIds;
     },
 
+    getSelectedProductIds : function() {
+        var productIds = [];
+        $('table.list').find('input.row-marker[type="checkbox"]:checked').each(function () {
+            var productId = $(this).closest('tr').find('td.cell-id').html();
+            productIds.push(productId);
+        });
+        return productIds;
+    },
+    
     initChangePickupDayOfSelectedProductsButton : function () {
         var button = $('#changePickupDayOfSelectedProductsButton');
         foodcoopshop.Helper.disableButton(button);
 
         $('table.list').find('input.row-marker[type="checkbox"]').on('click', function () {
-            foodcoopshop.Admin.updateChangePickupDayOfSelectedProductsButton(button);
+            foodcoopshop.Admin.updateObjectSelectionActionButton(button);
         });
 
         button.on('click', function () {
@@ -144,13 +153,6 @@ foodcoopshop.Admin = {
         });
 
     },
-
-    updateChangePickupDayOfSelectedProductsButton : function(button) {
-        foodcoopshop.Helper.disableButton(button);
-        if ($('table.list').find('input.row-marker[type="checkbox"]:checked').length > 0) {
-            foodcoopshop.Helper.enableButton(button);
-        }
-    },
     
     initCancelSelectionButton : function () {
 
@@ -158,7 +160,7 @@ foodcoopshop.Admin = {
         foodcoopshop.Helper.disableButton(button);
 
         $('table.list').find('input.row-marker[type="checkbox"]').on('click', function () {
-            foodcoopshop.Admin.updateCancelSelectionButton(button);
+            foodcoopshop.Admin.updateObjectSelectionActionButton(button);
         });
 
         button.on('click', function () {
@@ -168,7 +170,7 @@ foodcoopshop.Admin = {
 
     },
 
-    updateCancelSelectionButton : function (button) {
+    updateObjectSelectionActionButton : function (button) {
         foodcoopshop.Helper.disableButton(button);
         if ($('table.list').find('input.row-marker[type="checkbox"]:checked').length > 0) {
             foodcoopshop.Helper.enableButton(button);
@@ -190,7 +192,7 @@ foodcoopshop.Admin = {
                 liveSearch: true,
                 showIcon: true,
                 iconBase: 'fontawesome',
-                tickIcon: 'fa fa-check'
+                tickIcon: 'fas fa-check'
             };
             if ($(this).attr('multiple') == 'multiple') {
                 var emptyElement = $(this).find('option').first();
@@ -379,7 +381,7 @@ foodcoopshop.Admin = {
         $('.product-deposit-edit-button').on('click', function () {
             var row = $(this).closest('tr');
             $('#' + dialogId + ' #dialogDepositDeposit').val(row.find('span.deposit-for-dialog').html());
-            $('#' + dialogId + ' #dialogDepositProductId').val(row.find('td:nth-child(1)').html());
+            $('#' + dialogId + ' #dialogDepositProductId').val(row.find('td.cell-id').html());
             var label = foodcoopshop.Admin.getProductNameForDialog(row);
             $('#' + dialogId + ' label[for="dialogDepositDeposit"]').html(label);
             dialog.dialog('open');
@@ -474,7 +476,7 @@ foodcoopshop.Admin = {
         $('.product-price-edit-button').on('click', function () {
 
             var row = $(this).closest('tr');
-            var productId = row.find('td:nth-child(1)').html();
+            var productId = row.find('td.cell-id').html();
 
             var radioMainSelector = '#' + dialogId + ' input[name="dialogPricePricePerUnitEnabled"]';
             var radio;
@@ -610,7 +612,7 @@ foodcoopshop.Admin = {
 
             foodcoopshop.Helper.initCkeditor('dialogDescriptionShort');
             var row = $(this).closest('tr');
-            var nameCell = row.find('td:nth-child(4)');
+            var nameCell = row.find('td.cell-name');
             $('#' + dialogId + ' #dialogName').val(foodcoopshop.Admin.decodeEntities(nameCell.find('span.name-for-dialog .product-name').html()));
             $('#' + dialogId + ' #dialogIsDeclarationOk').prop('checked', row.find('span.is-declaration-ok-wrapper').data('is-declaration-ok'));
             var unityElement = nameCell.find('span.unity-for-dialog');
@@ -620,7 +622,7 @@ foodcoopshop.Admin = {
             }
             $('#' + dialogId + ' #dialogUnity').val(unity);
             CKEDITOR.instances['dialogDescriptionShort'].setData(nameCell.find('span.description-short-for-dialog').html());
-            $('#' + dialogId + ' #dialogProductId').val(row.find('td:nth-child(1)').html());
+            $('#' + dialogId + ' #dialogProductId').val(row.find('td.cell-id').html());
 
             var manufacturerId = row.data('manufacturerId');
             foodcoopshop.Helper.ajaxCall(
@@ -662,96 +664,155 @@ foodcoopshop.Admin = {
         });
     },
     
-    initProductDeliveryRhythmEditDialog: function (container) {
+    openEditDeliveryRhythmDialog : function(productIds, infoText, selectedDeliveryRhythmType, selectedFirstDeliveryDay, selectedOrderPossibleUntil, selectedSendOrderListWeekday, selectedSendOrderListDay) {
         
-        $('.product-delivery-rhythm-edit-button').on('click', function () {
-            
-            var row = $(this).closest('tr');
+        var buttons = {};
+        buttons['cancel'] = foodcoopshop.Helper.getJqueryUiCancelButton();
+        buttons['save'] = {
+            text: foodcoopshop.LocalizedJs.helper.save,
+            click: function() {
+                
+                if (productIds.length == 0) {
+                    return false;
+                }
 
-            var dialogId = 'product-delivery-rhythm-edit-form';
-            var dialogHtml = foodcoopshop.DialogProduct.getHtmlForProductDeliveryRhythmEdit(dialogId);
-            $(container).append(dialogHtml);
+                $('#product-delivery-rhythm-edit-form .ajax-loader').show();
+                $('.ui-dialog button').attr('disabled', 'disabled');
 
-            var buttons = {};
-            buttons['cancel'] = foodcoopshop.Helper.getJqueryUiCancelButton();
-            buttons['save'] = {
-                text: foodcoopshop.LocalizedJs.helper.save,
-                click: function() {
-                    if ($('#dialogDeliveryRhythmProductId').val() == '') {
-                        return false;
-                    }
-
-                    $('#product-delivery-rhythm-edit-form .ajax-loader').show();
-                    $('.ui-dialog button').attr('disabled', 'disabled');
-
-                    var data = {
-                        productId: $('#dialogDeliveryRhythmProductId').val(),
-                        deliveryRhythmType: $('#dialogDeliveryRhythmType').val(),
-                        deliveryRhythmFirstDeliveryDay: $('#dialogDeliveryRhythmFirstDeliveryDay').val(),
-                        deliveryRhythmOrderPossibleUntil: $('#dialogDeliveryRhythmOrderPossibleUntil').val()
-                    };
-                    
-                    foodcoopshop.Helper.ajaxCall(
-                        '/admin/products/editDeliveryRhythm/',
-                        data,
-                        {
-                            onOk: function (data) {
-                                document.location.reload();
-                            },
-                            onError: function (data) {
-                                var form = $('#product-delivery-rhythm-edit-form form');
-                                form.find('.ajax-loader').hide();
-                                foodcoopshop.Admin.appendFlashMessageToDialog(form, data.msg);
-                            }
+                var data = {
+                    productIds: productIds,
+                    deliveryRhythmType: $('#dialogDeliveryRhythmType').val(),
+                    deliveryRhythmFirstDeliveryDay: $('#dialogDeliveryRhythmFirstDeliveryDay').val(),
+                    deliveryRhythmOrderPossibleUntil: $('#dialogDeliveryRhythmOrderPossibleUntil').val(),
+                    deliveryRhythmSendOrderListWeekday: $('#dialogDeliveryRhythmSendOrderListWeekday').val(),
+                    deliveryRhythmSendOrderListDay: $('#dialogDeliveryRhythmSendOrderListDay').val()
+                };
+                
+                foodcoopshop.Helper.ajaxCall(
+                    '/admin/products/editDeliveryRhythm/',
+                    data,
+                    {
+                        onOk: function (data) {
+                            document.location.reload();
+                        },
+                        onError: function (data) {
+                            var form = $('#product-delivery-rhythm-edit-form form');
+                            form.find('.ajax-loader').hide();
+                            foodcoopshop.Admin.appendFlashMessageToDialog(form, data.msg);
                         }
-                    );
+                    }
+                );
 
-                }
-            };
-            
-            var dialogOptions = {
-                autoOpen: false,
-                height: 400,
-                width: 420,
-                modal: true,
-                buttons: buttons
-            };            
-            
-            var select = $('#' + dialogId + ' #dialogDeliveryRhythmType');
-            select.find('option').remove();
-            select.append($('#rhythmtypes').html());
-            var selectedDeliveryRhythmType = $(this).closest('tr').find('td span.delivery-rhythm-for-dialog span.dropdown').html();
-            select.on('change', function() {
-                var elementToShow = 'default';
-                if ($(this).val().match('individual')) {
-                    elementToShow = 'individual';
-                }
-                $('#' + dialogId + ' .dynamic-element').hide();
-                $('#' + dialogId + ' .dynamic-element.' + elementToShow).show();
-            });
-            select.val(selectedDeliveryRhythmType);
-            select.trigger('change');
-            
-            foodcoopshop.Helper.initDatepicker();
-            
-            var firstDeliveryDayInput = $('#' + dialogId + ' #dialogDeliveryRhythmFirstDeliveryDay');
-            firstDeliveryDayInput.val($(this).closest('tr').find('td span.delivery-rhythm-for-dialog span.first-delivery-day').html());
-            foodcoopshop.Admin.addDatepickerInDialog(firstDeliveryDayInput);
-            
-            var orderPossibleUntilInput = $('#' + dialogId + ' #dialogDeliveryRhythmOrderPossibleUntil');
-            var orderPossibleUntilDataElement = $(this).closest('tr').find('td span.delivery-rhythm-for-dialog span.order-possible-until');
-            if (orderPossibleUntilDataElement.length > 0) {
-                orderPossibleUntilInput.val(orderPossibleUntilDataElement.html());
             }
-            foodcoopshop.Admin.addDatepickerInDialog(orderPossibleUntilInput);
+        };
+        
+        var dialogOptions = {
+            autoOpen: false,
+            height: 470,
+            width: 490,
+            modal: true,
+            buttons: buttons
+        };            
+        
+        $('#product-delivery-rhythm-edit-form').remove();
+        var dialogId = 'product-delivery-rhythm-edit-form';
+        var dialogHtml = foodcoopshop.DialogProduct.getHtmlForProductDeliveryRhythmEdit(dialogId, productIds);
+        $('body').append(dialogHtml);
+        var dialog = $('#' + dialogId).dialog(dialogOptions);
+        dialog.dialog('open');
+        $('#' + dialogId + ' label[for="dialogDeliveryRhythm"]').html(infoText);
+        
+        var select = $('#' + dialogId + ' #dialogDeliveryRhythmType');
+        select.find('option').remove();
+        select.append($('#rhythmtypes').html());
+        select.on('change', function() {
+            var elementToShow = 'default';
+            if ($(this).val().match('individual')) {
+                elementToShow = 'individual';
+            }
+            $('#' + dialogId + ' .dynamic-element').hide();
+            $('#' + dialogId + ' .dynamic-element.' + elementToShow).show();
+        });
+        select.val(selectedDeliveryRhythmType);
+        select.trigger('change');
 
-            $('#' + dialogId + ' #dialogDeliveryRhythmProductId').val(row.find('td:nth-child(1)').html());
-            $('#' + dialogId + ' label[for="dialogDeliveryRhythm"]').html(foodcoopshop.Admin.getProductNameForDialog(row));
+        var select2 = $('#' + dialogId + ' #dialogDeliveryRhythmSendOrderListWeekday');
+        select2.find('option').remove();
+        select2.append($('#weekdays').html());
+        select2.val(selectedSendOrderListWeekday);
+        select2.trigger('change');
 
-            var dialog = $('#' + dialogId).dialog(dialogOptions);
-            dialog.dialog('open');
+        foodcoopshop.Helper.initDatepicker();
+        
+        var firstDeliveryDayInput = $('#' + dialogId + ' #dialogDeliveryRhythmFirstDeliveryDay');
+        firstDeliveryDayInput.val(selectedFirstDeliveryDay);
+        foodcoopshop.Admin.addDatepickerInDialog(firstDeliveryDayInput);
+        
+        var orderPossibleUntilInput = $('#' + dialogId + ' #dialogDeliveryRhythmOrderPossibleUntil');
+        orderPossibleUntilInput.val(selectedOrderPossibleUntil);
+        foodcoopshop.Admin.addDatepickerInDialog(orderPossibleUntilInput);
+
+        var sendOrderListDayInput = $('#' + dialogId + ' #dialogDeliveryRhythmSendOrderListDay');
+        sendOrderListDayInput.val(selectedSendOrderListDay);
+        foodcoopshop.Admin.addDatepickerInDialog(sendOrderListDayInput);
+
+    },
+    
+    initProductDeliveryRhythmEditDialog: function (container) {
+        $('.product-delivery-rhythm-edit-button').on('click', function () {
+            var row = $(this).closest('tr');
+            var productId = row.find('td.cell-id').html();
+            var infoText = foodcoopshop.Admin.getProductNameForDialog(row);
+            var selectedDeliveryRhythmType = row.find('td span.delivery-rhythm-for-dialog span.dropdown').html();
+            var selectedFirstDeliveryDay = row.find('td span.delivery-rhythm-for-dialog span.first-delivery-day').html();
+            var selectedOrderPossibleUntil = '';
+            var selectedOrderPossibleUntilDataElement = row.find('td span.delivery-rhythm-for-dialog span.order-possible-until');
+            if (selectedOrderPossibleUntilDataElement && selectedOrderPossibleUntilDataElement.length > 0) {
+                selectedOrderPossibleUntil = selectedOrderPossibleUntilDataElement.html();
+            }
+            var selectedSendOrderListWeekday = row.find('td span.delivery-rhythm-for-dialog span.send-order-list-weekday').html();
+            var selectedSendOrderListDay = '';
+            var selectedSendOrderListDayDataElement = row.find('td span.delivery-rhythm-for-dialog span.send-order-list-day');
+            if (selectedSendOrderListDayDataElement && selectedSendOrderListDayDataElement.length > 0) {
+                selectedSendOrderListDay = selectedSendOrderListDayDataElement.html(); 
+            }
+            foodcoopshop.Admin.openEditDeliveryRhythmDialog([productId], infoText, selectedDeliveryRhythmType, selectedFirstDeliveryDay, selectedOrderPossibleUntil, selectedSendOrderListWeekday, selectedSendOrderListDay);
+        });
+    },
+    
+    initEditDeliveryRhythmForSelectedProducts : function() {
+        
+        var button = $('#editDeliveryRhythmForSelectedProducts');
+        foodcoopshop.Helper.disableButton(button);
+
+        $('table.list').find('input.row-marker[type="checkbox"]').on('click', function () {
+            foodcoopshop.Admin.updateObjectSelectionActionButton(button);
+        });
+
+        button.on('click', function () {
+            var productIds = foodcoopshop.Admin.getSelectedProductIds();
+            foodcoopshop.Admin.openBulkEditDeliveryRhythmDialog(productIds);
         });
         
+    },
+    
+    
+    openBulkEditDeliveryRhythmDialog : function(productIds) {
+        var infoText = '';
+        if (productIds.length == 1) {
+            infoText = foodcoopshop.LocalizedJs.admin.YouSelectedOneProduct;
+        } else {
+            infoText = foodcoopshop.LocalizedJs.admin.YouSelected0Products.replace(/\{0\}/, '<b>' + productIds.length + '</b>');
+        }
+        infoText += '<br />';
+        
+        var selectedDeliveryRhythmType = foodcoopshop.Helper.getUniqueHtmlValueOfDomElements('tr.selected .delivery-rhythm-for-dialog .dropdown', '1-week');
+        var selectedFirstDeliveryDay = foodcoopshop.Helper.getUniqueHtmlValueOfDomElements('tr.selected .delivery-rhythm-for-dialog .first-delivery-day', '');
+        var selectedOrderPossibleUntil = foodcoopshop.Helper.getUniqueHtmlValueOfDomElements('tr.selected .delivery-rhythm-for-dialog .order-possible-until', '');
+        var selectedSendOrderListWeekday = foodcoopshop.Helper.getUniqueHtmlValueOfDomElements('tr.selected .delivery-rhythm-for-dialog .send-order-list-weekday', '');
+        var selectedSendOrderListDay = foodcoopshop.Helper.getUniqueHtmlValueOfDomElements('tr.selected .delivery-rhythm-for-dialog .send-order-list-day', '');
+        
+        foodcoopshop.Admin.openEditDeliveryRhythmDialog(productIds, infoText, selectedDeliveryRhythmType, selectedFirstDeliveryDay, selectedOrderPossibleUntil, selectedSendOrderListWeekday, selectedSendOrderListDay);
     },
     
     initProductIsStockProductEditDialog: function (container) {
@@ -812,7 +873,7 @@ foodcoopshop.Admin = {
             };            
             
             $('#' + dialogId + ' #dialogIsStockProductIsStockProduct').prop('checked', row.find('td.is-stock-product').html().match('fa-check'));
-            $('#' + dialogId + ' #dialogIsStockProductProductId').val(row.find('td:nth-child(1)').html());
+            $('#' + dialogId + ' #dialogIsStockProductProductId').val(row.find('td.cell-id').html());
             $('#' + dialogId + ' label[for="dialogIsStockProductIsStockProduct"]').html(foodcoopshop.Admin.getProductNameForDialog(row));
 
             var dialog = $('#' + dialogId).dialog(dialogOptions);
@@ -897,7 +958,7 @@ foodcoopshop.Admin = {
                     $('#' + dialogId + ' #dialogQuantityQuantityLimit').val(0);
                 }
                 if (row.find('i.sold-out-limit-for-dialog').length > 0) {
-                    if (row.find('i.sold-out-limit-for-dialog').html().match('fa-close')) {
+                    if (row.find('i.sold-out-limit-for-dialog').html().match('fa-times')) {
                         $('#' + dialogId + ' #dialogQuantitySoldOutLimit').val('');
                     } else {
                         $('#' + dialogId + ' #dialogQuantitySoldOutLimit').val(row.find('i.sold-out-limit-for-dialog').html().replace(/\./, ''));
@@ -905,11 +966,11 @@ foodcoopshop.Admin = {
                 } else {
                     $('#' + dialogId + ' #dialogQuantitySoldOutLimit').val(0);
                 }
-                dialogOptions.height = 350;
+                dialogOptions.height = 390;
             }
             
             $('#' + dialogId + ' #dialogQuantityQuantity').val(row.find('span.quantity-for-dialog').html().replace(/\./, ''));
-            $('#' + dialogId + ' #dialogQuantityProductId').val(row.find('td:nth-child(1)').html());
+            $('#' + dialogId + ' #dialogQuantityProductId').val(row.find('td.cell-id').html());
             var label = foodcoopshop.Admin.getProductNameForDialog(row);
             $('#' + dialogId + ' label[for="dialogQuantityQuantity"]').html(label);
 
@@ -934,7 +995,7 @@ foodcoopshop.Admin = {
         var dialogHtml = '';
         dialogHtml += '<div class="field-wrapper">';
         dialogHtml += '<label>' + foodcoopshop.LocalizedJs.admin.NewPickupDay + '</label>';
-        dialogHtml += '<input style="margin-left:10px;" class="datepicker" type="text" name="dialogChangePickupDay" id="dialogChangePickupDay" /><br />';
+        dialogHtml += '<input style="margin-left:10px;" autocomplete="off" class="datepicker" type="text" name="dialogChangePickupDay" id="dialogChangePickupDay" /><br />';
         dialogHtml += '</div>';
         dialogHtml += '<p style="margin-top:10px;float:left;">' + foodcoopshop.LocalizedJs.admin.ChangePickupDayInvoicesInfoText + '</p>';
         dialogHtml += '<div style="margin-top:10px;float:left;" class="textarea-wrapper">';
@@ -1011,7 +1072,7 @@ foodcoopshop.Admin = {
                 $('.ui-dialog').removeClass('has-datepicker');
                 // if datepicker is closed without selecting a date, it's focused and another click does not trigger to open calendar again
                 $(this).off('click').on('click', function() {
-                    datepickerInput.datepicker('show');
+                    inputField.datepicker('show');
                 });
             }
         });
@@ -1021,9 +1082,9 @@ foodcoopshop.Admin = {
 
         var infoText = '<p>';
         if (orderDetailIds.length == 1) {
-            infoText = foodcoopshop.LocalizedJs.admin.YouSelectedOneProductForCancellation;
+            infoText = foodcoopshop.LocalizedJs.admin.YouSelectedOneProduct;
         } else {
-            infoText = foodcoopshop.LocalizedJs.admin.YouSelected0ProductsForCancellation.replace(/\{0\}/, '<b>' + orderDetailIds.length + '</b>');
+            infoText = foodcoopshop.LocalizedJs.admin.YouSelected0Products.replace(/\{0\}/, '<b>' + orderDetailIds.length + '</b>');
         }
 
         infoText += ':</p>';
@@ -1157,9 +1218,9 @@ foodcoopshop.Admin = {
                 }
             };
 
-            var dataRow = $('#change-new-state-' + productId).parent().parent().parent().parent();
+            var dataRow = $(this).closest('tr');
             $('<div></div>').appendTo('body')
-                .html('<p>' + reallyNewStateText.replaceI18n(0,  '<b>' + dataRow.find('td:nth-child(4) span.name-for-dialog').html() + '</b>') + '</p><img class="ajax-loader" src="/img/ajax-loader.gif" height="32" width="32" />')
+                .html('<p>' + reallyNewStateText.replaceI18n(0,  '<b>' + dataRow.find('td.cell-name span.name-for-dialog').html() + '</b>') + '</p><img class="ajax-loader" src="/img/ajax-loader.gif" height="32" width="32" />')
                 .dialog({
                     modal: true,
                     title: newStateText,
@@ -1178,12 +1239,12 @@ foodcoopshop.Admin = {
 
         $(container).find('.delete-product-attribute-button').on('click', function () {
 
-            var splittedProductId = $(this).parent().parent().parent().parent().parent().attr('id').replace(/product-/, '').split('-');
+            var splittedProductId = $(this).closest('tr').attr('id').replace(/product-/, '').split('-');
             var productId = splittedProductId[0];
             var productAttributeId = splittedProductId[1];
 
             var dataRow = $(this).closest('tr');
-            var htmlCode = '<p>' + foodcoopshop.LocalizedJs.admin.ReallyDeleteAttribute0.replaceI18n(0, '<b>' + dataRow.find('td:nth-child(4) span.name-for-dialog').html() + '</b>');
+            var htmlCode = '<p>' + foodcoopshop.LocalizedJs.admin.ReallyDeleteAttribute0.replaceI18n(0, '<b>' + dataRow.find('td.cell-name span.name-for-dialog').html() + '</b>');
             htmlCode += '<img class="ajax-loader" src="/img/ajax-loader.gif" height="32" width="32" />';
 
             var buttons = {};
@@ -1222,7 +1283,7 @@ foodcoopshop.Admin = {
             var productId = dataRow.attr('id').replace(/product-/, '').split('-');
             productId = productId[productId.length - 1];
 
-            var htmlCode = '<p>' + foodcoopshop.LocalizedJs.admin.PleaseChoseTheNewAttributeForProduct0.replaceI18n(0, '<b> ' + dataRow.find('td:nth-child(4) span.name-for-dialog').html() + '</b>') + '</p>';
+            var htmlCode = '<p>' + foodcoopshop.LocalizedJs.admin.PleaseChoseTheNewAttributeForProduct0.replaceI18n(0, '<b> ' + dataRow.find('td.cell-name span.name-for-dialog').html() + '</b>') + '</p>';
             var productAttributesDropdown = $('#productattributeid').clone(true);
 
             if (productAttributesDropdown.find('option').length == 0) {
@@ -1359,7 +1420,7 @@ foodcoopshop.Admin = {
 
         $('.filter-container .right a.cancel').on('click', function () {
             foodcoopshop.Helper.disableButton($(this));
-            foodcoopshop.Helper.addSpinnerToButton($(this), 'fa-remove');
+            foodcoopshop.Helper.addSpinnerToButton($(this), 'fa-times');
             var referer = $('input[name=referer').val();
             if (referer == '') {
                 referer = '/';
@@ -1522,7 +1583,7 @@ foodcoopshop.Admin = {
     triggerFilter : function () {
         $('#filter-loader').remove();
         $('#content').css('opacity', '.3');
-        $('#container').append('<div id="filter-loader"><i class="fa fa-spinner"></i></div>');
+        $('#container').append('<div id="filter-loader"><i class="fas fa-circle-notch"></i></div>');
         var marginTop = $('.filter-container').outerHeight();
         $('#filter-loader').css('top', marginTop + 20);
         foodcoopshop.Admin.submitFilterForm();
@@ -1991,7 +2052,7 @@ foodcoopshop.Admin = {
                             var cartFinishedRegExp = new RegExp(foodcoopshop.LocalizedJs.admin.routeCartFinished);
                             if (currentUrl.match(cartFinishedRegExp)) {
                                 $.featherlight.showLoader();
-                                var message = $(this).contents().find('#flashMessage').html().replace(/<(a|img)[^>]*>/g,'');
+                                var message = $(this).contents().find('#flashMessage').html().replace(/<(a|i)[^>]*>/g,'');
                                 document.location.href = foodcoopshop.Admin.addParameterToURL(
                                     foodcoopshop.Admin.getParentLocation(),
                                     'message=' + encodeURIComponent(message)
@@ -2122,7 +2183,7 @@ foodcoopshop.Admin = {
             var dataRow = $('#change-active-state-' + productId).closest('tr');
             $('<div></div>')
                 .appendTo('body')
-                .html('<p>' + reallyNewStateText.replaceI18n(0, '<b>' + dataRow.find('td:nth-child(4) span.name-for-dialog').html() + '</b>') + '</p><img class="ajax-loader" src="/img/ajax-loader.gif" height="32" width="32" />')
+                .html('<p>' + reallyNewStateText.replaceI18n(0, '<b>' + dataRow.find('td.cell-name span.name-for-dialog').html() + '</b>') + '</p><img class="ajax-loader" src="/img/ajax-loader.gif" height="32" width="32" />')
                 .dialog({
                     modal: true,
                     title: newStateText,
@@ -2352,7 +2413,7 @@ foodcoopshop.Admin = {
         // one removes itself after one execution
         productDropdown.one('click', function () {
 
-            $(this).parent().find('div.filter-option-inner-inner').append('<i class="fa fa-spinner fa-spin"></i>');
+            $(this).parent().find('div.filter-option-inner-inner').append('<i class="fas fa-circle-notch fa-spin"></i>');
 
             foodcoopshop.Helper
                 .ajaxCall('/admin/products/ajaxGetProductsForDropdown/' +
@@ -2362,7 +2423,7 @@ foodcoopshop.Admin = {
                         select.append(data.products);
                         select.attr('disabled', false);
                         select.selectpicker('refresh');
-                        select.find('i.fa-spinner').remove();
+                        select.find('i.fa-circle-notch').remove();
                     },
                     onError: function (data) {
                         console.log(data.msg);

@@ -420,10 +420,10 @@ class CustomersTable extends AppTable
 
     public function getForDropdown($includeManufacturers = false, $index = 'id_customer', $includeOfflineCustomers = true, $conditions = [])
     {
+        
         $contain = [];
         if (! $includeManufacturers) {
             $this->dropManufacturersInNextFind();
-            $contain[] = 'ValidOrderDetails';
             $contain[] = 'AddressCustomers'; // to make exclude happen using dropManufacturersInNextFind
         }
 
@@ -432,8 +432,20 @@ class CustomersTable extends AppTable
             'conditions' => $conditions,
             'order' => Configure::read('app.htmlHelper')->getCustomerOrderBy(),
             'contain' => $contain
-        ]);
-
+        ])->toArray();
+        
+        if (! $includeManufacturers) {
+            $validOrderDetails = $this->getAssociation('ValidOrderDetails');
+            $i = 0;
+            foreach($customers as $customer) {
+                $customers[$i]->validOrderDetailCount = $validOrderDetails->find('all', [
+                    'conditions' => [
+                        'id_customer' => $customers[$i]->id_customer
+                    ]
+                ])->count();
+                $i++;
+            }
+        }
         $offlineCustomers = [];
         $onlineCustomers = [];
         $notYetOrderedCustomers = [];
@@ -460,7 +472,7 @@ class CustomersTable extends AppTable
                     $offlineCustomers[$customer->$index] = $userNameForDropdown;
                 } else {
                     if (! $includeManufacturers) {
-                        if (empty($customer->valid_order_details)) {
+                        if ($customer->validOrderDetailCount == 0) {
                             $notYetOrderedCustomers[$customer->$index] = $userNameForDropdown;
                         } else {
                             $onlineCustomers[$customer->$index] = $userNameForDropdown;

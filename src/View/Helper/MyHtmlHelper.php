@@ -32,6 +32,11 @@ class MyHtmlHelper extends HtmlHelper
         parent::__construct($View, $config);
     }
     
+    public function isStockProductOrderPossibleInOrdersWithDeliveryRhythms($instantOrderMode, $includeStockProductsInOrdersWithDeliveryRhythm, $stockManagementEnabled, $isStockProduct)
+    {
+        return !$instantOrderMode && !$includeStockProductsInOrdersWithDeliveryRhythm && $stockManagementEnabled && $isStockProduct;
+    }
+    
     public function getDeliveryRhythmString($isStockProduct, $deliveryRhythmType, $deliveryRhythmCount)
     {
         
@@ -87,16 +92,16 @@ class MyHtmlHelper extends HtmlHelper
         switch($orderState)
         {
             case ORDER_STATE_ORDER_PLACED:
-                return 'fa-cart-arrow-down ok';
+                return 'fas fa-cart-arrow-down ok';
                 break;
             case ORDER_STATE_ORDER_LIST_SENT_TO_MANUFACTURER:
-                return 'fa-envelope-o ok';
+                return 'far fa-envelope ok';
                 break;
             case ORDER_STATE_BILLED_CASHLESS:
             case ORDER_STATE_BILLED_CASH:
             case ORDER_STATE_CASH_FREE:
             case ORDER_STATE_CASH:
-                return 'fa-lock not-ok';
+                return 'fa fa-lock not-ok';
                 break;
         }
         return '';
@@ -359,15 +364,6 @@ class MyHtmlHelper extends HtmlHelper
         ];
     }
 
-    /**
-     * @param string $icon
-     * @return string
-     */
-    public function getFamFamFamPath($icon)
-    {
-        return '/node_modules/famfamfam-silk/dist/png/'.$icon;
-    }
-
     public function getGroupName($groupId)
     {
         return $this->getGroups()[$groupId];
@@ -401,27 +397,6 @@ class MyHtmlHelper extends HtmlHelper
         } else {
             return "CONCAT(c.firstname, ' ', c.lastname)";
         }
-    }
-
-    public function getJqueryUiIcon($icon, $options, $url = '')
-    {
-        $options['escape'] = [
-            true
-        ];
-
-        $return = '<ul class="jquery-ui-icon">';
-        $return .= '<li class="ui-state-default ui-corner-all">';
-
-        if ($url == '') {
-            $return .= $icon;
-        } else {
-            $return .= self::link($icon, $url, $options);
-        }
-
-        $return .= '</li>';
-        $return .= '</ul>';
-
-        return $return;
     }
 
     public function getMemberFeeTextForFrontend($text)
@@ -651,14 +626,14 @@ class MyHtmlHelper extends HtmlHelper
 
     public function getOrderListLink($manufacturerName, $manufacturerId, $deliveryDay, $groupTypeLabel)
     {
-        $url = Configure::read('app.folder_order_lists_with_current_year_and_month') . DS;
+        $url = Configure::read('app.folder_order_lists') . DS . date('Y', strtotime($deliveryDay)) . DS . date('m', strtotime($deliveryDay)) . DS;
         $url .= $deliveryDay . '_' . StringComponent::slugifyAndKeepCase($manufacturerName) . '_' . $manufacturerId . __('_Order_list_filename_') . $groupTypeLabel . '_' . StringComponent::slugifyAndKeepCase(Configure::read('appDb.FCS_APP_NAME')) . '.pdf';
         return $url;
     }
 
     public function getInvoiceLink($manufacturerName, $manufacturerId, $invoiceDate, $invoiceNumber)
     {
-        $url = Configure::read('app.folder_invoices_with_current_year_and_month') . DS;
+        $url = Configure::read('app.folder_invoices') . DS . date('Y', strtotime($invoiceDate)) . DS . date('m', strtotime($invoiceDate)) . DS;
         $url .= $invoiceDate . '_' . StringComponent::slugifyAndKeepCase($manufacturerName) . '_' . $manufacturerId . __('_Invoice_filename_') . $invoiceNumber . '_' . StringComponent::slugifyAndKeepCase(Configure::read('appDb.FCS_APP_NAME')) . '.pdf';
         return $url;
     }

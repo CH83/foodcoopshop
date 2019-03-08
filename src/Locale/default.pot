@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2019-01-06 23:23+0100\n"
+"POT-Creation-Date: 2019-03-04 21:58+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -359,6 +359,9 @@ msgstr ""
 msgid "Show_less"
 msgstr ""
 
+msgid "Close"
+msgstr ""
+
 msgid "route_cart"
 msgstr ""
 
@@ -509,10 +512,10 @@ msgstr ""
 msgid "Really_cancel_selected_products?"
 msgstr ""
 
-msgid "You_selected_1_product_for_cancellation"
+msgid "You_selected_1_product"
 msgstr ""
 
-msgid "You_selected_{0}_products_for_cancellation"
+msgid "You_selected_{0}_products"
 msgstr ""
 
 msgid "Adapt_amount_reason_is_mandatory."
@@ -809,7 +812,10 @@ msgstr ""
 msgid "Delivery_day"
 msgstr ""
 
-msgid "First_delivery_day_info."
+msgid "First_delivery_day_info_(one_product)."
+msgstr ""
+
+msgid "First_delivery_day_info_(multiple_products)."
 msgstr ""
 
 msgid "can_be_left_blank"
@@ -822,6 +828,18 @@ msgid "Info_page_for_delivery_rhythm"
 msgstr ""
 
 msgid "docs_route_order_handling"
+msgstr ""
+
+msgid "Last_order_weekday"
+msgstr ""
+
+msgid "Send_order_lists_day"
+msgstr ""
+
+msgid "Order_lists_are_sent_automatically_next_day_in_the_morning."
+msgstr ""
+
+msgid "Order_lists_are_sent_automatically_on_this_day."
 msgstr ""
 
 msgid "delete"
@@ -1412,6 +1430,12 @@ msgstr ""
 msgid "The_first_delivery_day"
 msgstr ""
 
+msgid "The_send_order_list_day_field_is_not_valid."
+msgstr ""
+
+msgid "The_send_order_list_day_field_needs_to_be_between_order_possible_until_date_and_first_delivery_day."
+msgstr ""
+
 msgid "The_first_delivery_day_needs_to_be_a_last_{0}_of_the_month."
 msgstr ""
 
@@ -1676,7 +1700,10 @@ msgstr ""
 msgid "Load_past_orders"
 msgstr ""
 
-msgid "This_order_will_be_placed_for_{0}"
+msgid "This_order_will_be_placed_for_{0}."
+msgstr ""
+
+msgid "Only_stock_products_are_shown."
 msgstr ""
 
 msgid "Your_credit_balance"
@@ -1704,6 +1731,12 @@ msgid "Upload_new_file"
 msgstr ""
 
 msgid "Search_PC"
+msgstr ""
+
+msgid "Other_initiaives_working_with_FoodCoopShop"
+msgstr ""
+
+msgid "Map_with_all_Austrian_foodocops"
 msgstr ""
 
 msgid "Information"
@@ -1737,6 +1770,9 @@ msgid "Print"
 msgstr ""
 
 msgid "Categories"
+msgstr ""
+
+msgid "There_are_only_stock_products_shown_in_this_list."
 msgstr ""
 
 msgid "Admin_area"
@@ -1808,6 +1844,9 @@ msgstr ""
 msgid "Move_in_cart"
 msgstr ""
 
+msgid "Stock_product:_order_possible_only_with_instant_order_on_pick_up."
+msgstr ""
+
 msgid "Currently_not_on_stock"
 msgstr ""
 
@@ -1817,10 +1856,10 @@ msgstr ""
 msgid "More_infos_to_product_{0}"
 msgstr ""
 
-msgid "Instant_order"
+msgid "Last_order_day"
 msgstr ""
 
-msgid "Edit_product"
+msgid "Instant_order"
 msgstr ""
 
 msgid "from_which_{0}_%"
@@ -2079,6 +2118,12 @@ msgid "active_state_inactive"
 msgstr ""
 
 msgid "active_state_all"
+msgstr ""
+
+msgid "midnight"
+msgstr ""
+
+msgid "default_value"
 msgstr ""
 
 msgid "price_will_be_eventually_adapted."

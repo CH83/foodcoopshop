@@ -3,9 +3,8 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2019-01-06 23:23+0100\n"
-"PO-Revision-Date: 2019-01-06 23:25+0100\n"
+"POT-Creation-Date: 2019-03-04 21:58+0100\n"
+"PO-Revision-Date: 2019-03-04 22:10+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -13,7 +12,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.2\n"
+"X-Generator: Poedit 2.2.1\n"
+"Project-Id-Version: \n"
 
 msgid "You_have_been_signed_out."
 msgstr "Du hast dich erfolgreich abgemeldet."
@@ -360,6 +360,9 @@ msgstr "Mehr anzeigen"
 msgid "Show_less"
 msgstr "Weniger anzeigen"
 
+msgid "Close"
+msgstr "Schließen"
+
 msgid "route_cart"
 msgstr "warenkorb"
 
@@ -510,11 +513,11 @@ msgstr "Bitte nur stornieren, wenn es mit dem Hersteller abgesprochen ist!"
 msgid "Really_cancel_selected_products?"
 msgstr "Ausgewählte Produkte wirklich stornieren?"
 
-msgid "You_selected_1_product_for_cancellation"
-msgstr "Du hast 1 Produkt zum Stornieren ausgewählt"
+msgid "You_selected_1_product"
+msgstr "Du hast 1 Produkt ausgewählt"
 
-msgid "You_selected_{0}_products_for_cancellation"
-msgstr "Du hast {0} Produkte zum Stornieren ausgewählt"
+msgid "You_selected_{0}_products"
+msgstr "Du hast {0} Produkte ausgewählt"
 
 msgid "Adapt_amount_reason_is_mandatory."
 msgstr "Bitte gib an, warum die Anzahl vermindert wird."
@@ -810,8 +813,11 @@ msgstr "Erster Liefertag"
 msgid "Delivery_day"
 msgstr "Liefertag"
 
-msgid "First_delivery_day_info."
-msgstr "Das Produkt ist ab sofort bestellbar."
+msgid "First_delivery_day_info_(one_product)."
+msgstr "Produkt ist ab sofort bestellbar."
+
+msgid "First_delivery_day_info_(multiple_products)."
+msgstr "Produkte sind ab sofort bestellbar."
 
 msgid "can_be_left_blank"
 msgstr "kann freigelassen werden"
@@ -824,6 +830,18 @@ msgstr "Infos zu den Lieferrhythmen"
 
 msgid "docs_route_order_handling"
 msgstr "bestellabwicklung"
+
+msgid "Last_order_weekday"
+msgstr "Bestellschluss"
+
+msgid "Send_order_lists_day"
+msgstr "Bestelllisten versenden am"
+
+msgid "Order_lists_are_sent_automatically_next_day_in_the_morning."
+msgstr "Die Bestelllisten werden automatisch am nächsten Tag in der Früh versendet."
+
+msgid "Order_lists_are_sent_automatically_on_this_day."
+msgstr "Die Bestelllisten werden automatisch am angegebenen Tag in der Früh versendet. Leeres Feld bedeutet: Bestelllisten werden nicht automatisch versendet."
 
 msgid "delete"
 msgstr "löschen"
@@ -929,6 +947,9 @@ msgstr "USt."
 
 msgid "Order_day"
 msgstr "Bestelltag"
+
+msgid "Price_per_weight"
+msgstr "Preis nach Gewicht"
 
 msgid "Total_sum"
 msgstr "Gesamtsumme"
@@ -1045,7 +1066,7 @@ msgid "Action_Log_Member_payback_added"
 msgstr "Mitglied: Rückzahlung eingetragen"
 
 msgid "Action_Log_Member_payback_deleted"
-msgstr "Mitglied: Rückzahlung eingetragen"
+msgstr "Mitglied: Rückzahlung gelöscht"
 
 msgid "Action_Log_Member_credit_deleted"
 msgstr "Mitglied: Guthaben gelöscht"
@@ -1413,6 +1434,12 @@ msgstr "Das Bestellbar-bis-Datum muss kleiner als der Liefertag sein."
 msgid "The_first_delivery_day"
 msgstr "Der erste Liefertag"
 
+msgid "The_send_order_list_day_field_is_not_valid."
+msgstr "Das Datum für den Bestelllisten-Versand ist nicht gültig."
+
+msgid "The_send_order_list_day_field_needs_to_be_between_order_possible_until_date_and_first_delivery_day."
+msgstr "Das Datum für den Bestellisten-Versand muss zwischen Bestellbar-bis-Datum und dem Liefertag liegen."
+
 msgid "The_first_delivery_day_needs_to_be_a_last_{0}_of_the_month."
 msgstr "Der erste Liefertag muss ein letzter {0} im Monat sein."
 
@@ -1677,8 +1704,11 @@ msgstr "Warenkorb"
 msgid "Load_past_orders"
 msgstr "Vergangene Bestellungen laden"
 
-msgid "This_order_will_be_placed_for_{0}"
+msgid "This_order_will_be_placed_for_{0}."
 msgstr "Diese Bestellung wird für {0} getätigt."
+
+msgid "Only_stock_products_are_shown."
+msgstr "Es werden nur Lagerprodukte angezeigt."
 
 msgid "Your_credit_balance"
 msgstr "Dein Guthaben"
@@ -1706,6 +1736,12 @@ msgstr "Neue Datei hochladen"
 
 msgid "Search_PC"
 msgstr "PC durchsuchen"
+
+msgid "Other_initiaives_working_with_FoodCoopShop"
+msgstr "Weitere Initiativen, die mit FoodCoopShop arbeiten"
+
+msgid "Map_with_all_Austrian_foodocops"
+msgstr "Aktuelle Karte mit <b>allen</b> österreichischen Foodcoops"
 
 msgid "Information"
 msgstr "Informationen"
@@ -1739,6 +1775,9 @@ msgstr "Drucken"
 
 msgid "Categories"
 msgstr "Kategorien"
+
+msgid "There_are_only_stock_products_shown_in_this_list."
+msgstr "In dieser Liste werden nur Lagerprodukte angezeigt."
 
 msgid "Admin_area"
 msgstr "Admin-Bereich"
@@ -1809,6 +1848,9 @@ msgstr "verfügbar"
 msgid "Move_in_cart"
 msgstr "In den Warenkorb"
 
+msgid "Stock_product:_order_possible_only_with_instant_order_on_pick_up."
+msgstr "Lagerprodukt: nur über Sofort-Bestellung beim Abholen bestellbar."
+
 msgid "Currently_not_on_stock"
 msgstr "Derzeit leider nicht verfügbar"
 
@@ -1818,11 +1860,11 @@ msgstr "Neu"
 msgid "More_infos_to_product_{0}"
 msgstr "Mehr Infos zu {0}"
 
+msgid "Last_order_day"
+msgstr "Bestellschluss"
+
 msgid "Instant_order"
 msgstr "Sofort-Bestellung"
-
-msgid "Edit_product"
-msgstr "Produkt bearbeiten"
 
 msgid "from_which_{0}_%"
 msgstr "davon {0} %"
@@ -2082,6 +2124,12 @@ msgstr "deaktiviert"
 msgid "active_state_all"
 msgstr "alle"
 
+msgid "midnight"
+msgstr "Mitternacht"
+
+msgid "default_value"
+msgstr "Standardwert"
+
 msgid "price_will_be_eventually_adapted."
 msgstr "Preis wird evtl. noch angepasst."
 
@@ -2180,6 +2228,19 @@ msgstr "Informationen-ueber-Ruecktrittsrecht"
 
 msgid "route_product"
 msgstr "produkt"
+
+#~ msgid "There_are_no_stock_products_shown_in_this_list."
+#~ msgstr "In dieser Liste werden keine Lagerprodukte angezeigt."
+
+#~ msgid "Edit_product"
+#~ msgstr "Produkt bearbeiten"
+
+#~ msgid "You_selected_1_product_for_changing_the_delivery_rhythm"
+#~ msgstr "Du hast 1 Produkt ausgewählt"
+
+#, fuzzy
+#~ msgid "You_selected_{0}_products_for_for_changing_the_delivery_rhythm"
+#~ msgstr "Du hast {0} Produkte zum Stornieren ausgewählt"
 
 #~ msgid "You_will_then_get_a_link_to_change_your_password."
 #~ msgstr "Wir senden dir dann einen Link zu, mit dem du das neue Passwort generieren kannst."

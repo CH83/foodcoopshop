@@ -57,29 +57,40 @@ class ProductsController extends AdminAppController
                  * START manufacturer OWNER check
                  */
                 if ($this->AppAuth->isManufacturer()) {
+                    // param productIds is passed via ajaxCall
+                    if (!empty($this->getRequest()->getData('productIds'))) {
+                        $productIds = $this->getRequest()->getData('productIds');
+                    }
                     // param productId is passed via ajaxCall
                     if (!empty($this->getRequest()->getData('productId'))) {
                         $ids = $this->Product->getProductIdAndAttributeId($this->getRequest()->getData('productId'));
-                        $productId = $ids['productId'];
+                        $productIds = [$ids['productId']];
                     }
                     // param objectId is passed via ajaxCall
                     if (!empty($this->getRequest()->getData('objectId'))) {
                         $ids = $this->Product->getProductIdAndAttributeId($this->getRequest()->getData('objectId'));
-                        $productId = $ids['productId'];
+                        $productIds = [$ids['productId']];
                     }
                     // param productId is passed as first argument of url
                     if (!empty($this->getRequest()->getParam('pass')[0])) {
-                        $productId = $this->getRequest()->getParam('pass')[0];
+                        $productIds = [$this->getRequest()->getParam('pass')[0]];
                     }
-                    if (!isset($productId)) {
+                    if (!isset($productIds)) {
                         return false;
                     }
-                    $product = $this->Product->find('all', [
-                        'conditions' => [
-                            'Products.id_product' => $productId
-                        ]
-                    ])->first();
-                    if (!empty($product) && $product->id_manufacturer == $this->AppAuth->getManufacturerId()) {
+                    $result = true;
+                    foreach($productIds as $productId) {
+                        $product = $this->Product->find('all', [
+                            'conditions' => [
+                                'Products.id_product' => $productId
+                            ]
+                        ])->first();
+                        if (empty($product) || $product->id_manufacturer != $this->AppAuth->getManufacturerId()) {
+                            $result = false;
+                            break;
+                        }
+                    }
+                    if ($result) {
                         return true;
                     }
                 }
@@ -350,21 +361,31 @@ class ProductsController extends AdminAppController
         $this->setRequest($this->getRequest()->withParsedBody($this->Sanitize->trimRecursive($this->getRequest()->getData())));
         $this->setRequest($this->getRequest()->withParsedBody($this->Sanitize->stripTagsRecursive($this->getRequest()->getData())));
         
-        $productId = (int) $this->getRequest()->getData('productId');
+        $productIds = $this->getRequest()->getData('productIds');
         $deliveryRhythmTypeCombined = $this->getRequest()->getData('deliveryRhythmType');
         $deliveryRhythmFirstDeliveryDay = $this->getRequest()->getData('deliveryRhythmFirstDeliveryDay');
         $deliveryRhythmOrderPossibleUntil = $this->getRequest()->getData('deliveryRhythmOrderPossibleUntil');
+        $deliveryRhythmSendOrderListWeekday = $this->getRequest()->getData('deliveryRhythmSendOrderListWeekday');
+        $deliveryRhythmSendOrderListDay = $this->getRequest()->getData('deliveryRhythmSendOrderListDay');
         
         $splittedDeliveryRhythmType = explode('-', $deliveryRhythmTypeCombined);
         
-        $oldProduct = $this->Product->find('all', [
-            'conditions' => [
-                'Products.id_product' => $productId
-            ],
-            'contain' => [
-                'Manufacturers'
-            ]
-        ])->first();
+        $singleEditMode = false;
+        if (count($productIds) == 1) {
+            $singleEditMode = true;
+            $productId = $productIds[0];
+        }
+        
+        if ($singleEditMode) {
+            $oldProduct = $this->Product->find('all', [
+                'conditions' => [
+                    'Products.id_product' => $productId
+                ],
+                'contain' => [
+                    'Manufacturers'
+                ]
+            ])->first();
+        }
         
         $deliveryRhythmCount = $splittedDeliveryRhythmType[0];
         $deliveryRhythmType = $splittedDeliveryRhythmType[1];
@@ -383,42 +404,83 @@ class ProductsController extends AdminAppController
         }
         
         $product2update['delivery_rhythm_order_possible_until'] = '';
+        $product2update['delivery_rhythm_send_order_list_day'] = '';
+        if ($deliveryRhythmSendOrderListWeekday == '') {
+            $deliveryRhythmSendOrderListWeekday = Configure::read('app.timeHelper')->getNthWeekdayBeforeWeekday(1, Configure::read('app.timeHelper')->getSendOrderListsWeekday());
+        }
+        $product2update['delivery_rhythm_send_order_list_weekday'] = Configure::read('app.timeHelper')->getNthWeekdayAfterWeekday(1, $deliveryRhythmSendOrderListWeekday);
+        
         if (in_array($deliveryRhythmTypeCombined, ['0-individual'])) {
             $product2update['delivery_rhythm_order_possible_until'] = Configure::read('app.timeHelper')->formatToDbFormatDate($deliveryRhythmOrderPossibleUntil);
+            if ($deliveryRhythmSendOrderListDay != '') {
+                $product2update['delivery_rhythm_send_order_list_day'] = Configure::read('app.timeHelper')->formatToDbFormatDate($deliveryRhythmSendOrderListDay);
+            }
         }
         
         try {
-            $this->Product->changeDeliveryRhythm(
-                [
-                    [
-                        $productId => $product2update
-                    ]
-                ]
-            );
             
-            $messageString = __d('admin', 'The_delivery_rhythm_of_the_product_{0}_from_manufacturer_{1}_was_changed_successfully_to_{2}.', [
-                '<b>' . $oldProduct->name . '</b>',
-                '<b>' . $oldProduct->manufacturer->name . '</b>',
-                '<b>' . Configure::read('app.htmlHelper')->getDeliveryRhythmString($oldProduct->is_stock_product, $deliveryRhythmType, $deliveryRhythmCount) . '</b>'
-            ]);
+            $products2update = [];
+            foreach($productIds as $productId) {
+                $products2update[] = [
+                    $productId => $product2update
+                ];
+            }
             
+            $this->Product->changeDeliveryRhythm($products2update);
+            
+            $additionalMessages = [];
             if ($deliveryRhythmFirstDeliveryDay != '') {
-                $messageString .= ' ';
-                if ($deliveryRhythmType == 'individual') {
-                    $messageString .= __d('admin', 'Delivery_day');
-                } else {
-                    $messageString .= __d('admin', 'First_delivery_day');
-                }
-                $messageString .= ': <b>'. Configure::read('app.timeHelper')->formatToDateShort($deliveryRhythmFirstDeliveryDay) . '</b>';
                 if ($product2update['delivery_rhythm_order_possible_until'] != '') {
-                    $messageString .= ', ' . __d('admin', 'Order_possible_until') . ': <b>'. Configure::read('app.timeHelper')->formatToDateShort($deliveryRhythmOrderPossibleUntil) . '</b>';
+                    $additionalMessages[] = __d('admin', 'Order_possible_until') . ': <b>'. Configure::read('app.timeHelper')->formatToDateShort($deliveryRhythmOrderPossibleUntil) . '</b>';
                 }
             }
             
-            $this->ActionLog->customSave('product_delivery_rhythm_changed', $this->AppAuth->getUserId(), $productId, 'products', $messageString);
-            $this->Flash->success($messageString);
+            if ($deliveryRhythmType == 'individual') {
+                if ($product2update['delivery_rhythm_send_order_list_day'] != '') {
+                    $additionalMessages[] = __d('admin', 'Send_order_lists_day') . ': <b>'. Configure::read('app.timeHelper')->formatToDateShort($deliveryRhythmSendOrderListDay) . '</b>';
+                }
+            } else {
+                if ($product2update['delivery_rhythm_send_order_list_weekday'] != Configure::read('app.timeHelper')->getSendOrderListsWeekday()) {
+                    $additionalMessages[] =  __d('admin', 'Last_order_weekday') . ': <b>' . Configure::read('app.timeHelper')->getWeekdayName(
+                        $deliveryRhythmSendOrderListWeekday) . ' ' . __d('admin', 'midnight')
+                        . '</b>';
+                }
+            }
             
-            $this->getRequest()->getSession()->write('highlightedRowId', $productId);
+            if ($deliveryRhythmFirstDeliveryDay != '') {
+                $deliveryDayMessage = '';
+                if ($deliveryRhythmType == 'individual') {
+                    $deliveryDayMessage .= __d('admin', 'Delivery_day');
+                } else {
+                    $deliveryDayMessage .= __d('admin', 'First_delivery_day');
+                }
+                $deliveryDayMessage .= ': <b>'. Configure::read('app.timeHelper')->formatToDateShort($deliveryRhythmFirstDeliveryDay) . '</b>';
+                $additionalMessages[] = $deliveryDayMessage;
+            }
+            
+            if ($singleEditMode) {
+                $messageString = __d('admin', 'The_delivery_rhythm_of_the_product_{0}_from_manufacturer_{1}_was_changed_successfully_to_{2}.', [
+                    '<b>' . $oldProduct->name . '</b>',
+                    '<b>' . $oldProduct->manufacturer->name . '</b>',
+                    '<b>' . Configure::read('app.htmlHelper')->getDeliveryRhythmString($oldProduct->is_stock_product, $deliveryRhythmType, $deliveryRhythmCount) . '</b>'
+                ]);
+                if (!empty($additionalMessages)) {
+                    $messageString .= ' ' . join(', ', $additionalMessages);
+                }
+                $this->ActionLog->customSave('product_delivery_rhythm_changed', $this->AppAuth->getUserId(), $productId, 'products', $messageString);
+                $this->getRequest()->getSession()->write('highlightedRowId', $productId);
+            } else {
+                $messageString = __d('admin', 'Delivery_rhythm_of_{0}_products_has_been_changed_successfully_to_{1}.', [
+                    count($productIds),
+                    '<b>' . Configure::read('app.htmlHelper')->getDeliveryRhythmString(false, $deliveryRhythmType, $deliveryRhythmCount) . '</b>'
+                ]);
+                if (!empty($additionalMessages)) {
+                    $messageString .= ' ' . join(', ', $additionalMessages);
+                }
+                $this->ActionLog->customSave('product_delivery_rhythm_changed', $this->AppAuth->getUserId(), 0, 'products', $messageString . ' Ids: ' . join(', ', $productIds));
+            }
+            
+            $this->Flash->success($messageString);
             
             die(json_encode([
                 'status' => 1,

@@ -118,7 +118,7 @@ INSERT INTO `fcs_configuration` VALUES
 (164,1,'FCS_CUSTOMER_GROUP','Welcher Gruppe sollen neu registrierte Mitglieder zugewiesen werden?','3','dropdown',40,'de_DE','2017-07-26 13:19:19','2017-07-26 13:19:19'),
 (456,1,'FCS_FOOTER_CMS_TEXT','Zusätzlicher Text für den Footer',NULL,'textarea_big',80,'de_DE','2014-06-11 17:50:55','2016-07-01 21:47:47'),
 (508,1,'FCS_FACEBOOK_URL','Facebook-Url für die Einbindung im Footer','https://www.facebook.com/FoodCoopShop/','text',90,'de_DE','2015-07-08 13:23:54','2015-07-08 13:23:54'),
-(538,1,'FCS_REGISTRATION_EMAIL_TEXT','Zusätzlicher Text, der in der Bestätigungsmail nach einer Registrierung versendet wird. <br /> <a href=\"/admin/configurations/previewEmail/FCS_REGISTRATION_EMAIL_TEXT\" target=\"_blank\"><img src=\"/js/vendor/famfamfam-silk/dist/png/information.png?1483041252\" alt=\"\"> E-Mail-Vorschau anzeigen</a>','','textarea_big',170,'de_DE','2016-06-26 00:00:00','2016-06-26 00:00:00'),
+(538,1,'FCS_REGISTRATION_EMAIL_TEXT','Zusätzlicher Text, der in der Bestätigungsmail nach einer Registrierung versendet wird. <br /> <a href=\"/admin/configurations/previewEmail/FCS_REGISTRATION_EMAIL_TEXT\" target=\"_blank\"><i class=\"fas fa-info-circle\"></i> E-Mail-Vorschau anzeigen</a>','','textarea_big',170,'de_DE','2016-06-26 00:00:00','2016-06-26 00:00:00'),
 (543,1,'FCS_RIGHT_INFO_BOX_HTML','Inhalt der Box in der rechten Spalte unterhalb des Warenkorbes. <br /><div class=\"small\">Um eine Zeile grün zu hinterlegen (Überschrift) bitte als \"Überschrift 3\" formatieren.<br />Die Variable {ABHOLTAG} zeigt automatisch das richtige Abholdatum an.</div>','<h3>Abholzeiten</h3>\r\n\r\n<p>Wenn du deine Produkte jetzt bestellst, kannst du sie am <strong>{ABHOLTAG}</strong>&nbsp;zwischen 17 und 19 Uhr abholen.</p>\r\n\r\n<p>Du kannst jede Woche bis sp&auml;testens Dienstag Mitternacht bestellen und sie am darauffolgenden Freitag abholen.</p>\r\n','textarea_big',150,'de_DE','2017-07-26 13:19:19','2017-07-26 13:19:19'),
 (544,1,'FCS_CART_ENABLED','Ist die Bestell-Funktion aktiviert?<br /><div class=\"small\">Falls die Foodcoop mal Urlaub macht, kann das Bestellen hier deaktiviert werden.</div>','1','boolean',10,'de_DE','2017-07-26 13:19:19','2017-07-26 13:19:19'),
 (545,1,'FCS_ACCOUNTING_EMAIL','E-Mail-Adresse des Finanzverantwortlichen<br /><div class=\"small\">Wer bekommt die Benachrichtigung über den erfolgten Rechnungsversand?</div>','fcs-demo-superadmin@mailinator.com','text',110,'de_DE','2017-07-26 13:19:19','2017-07-26 13:19:19'),
@@ -131,7 +131,6 @@ INSERT INTO `fcs_configuration` VALUES
 (552,1,'FCS_DELIVERY_DETAILS_FOR_MANUFACTURERS','Zusätzliche Liefer-Informationen für die Hersteller<br /><div class=\"small\">wird in den Bestell-Listen nach dem Lieferdatum angezeigt.</div>',', 15:00 bis 17:00 Uhr','text',120,'de_DE','2017-07-26 13:19:19','2017-07-26 13:19:19'),
 (553,1,'FCS_BACKUP_EMAIL_ADDRESS_BCC','E-Mail-Adresse, an die sämtliche vom System generierten E-Mails als BCC verschickt werden (Backup).<br /><div class=\"small\">Kann leer gelassen werden.</div>','','text',190,'de_DE','2016-10-06 00:00:00','2016-10-06 00:00:00'),
 (554,1,'FCS_SHOW_FOODCOOPSHOP_BACKLINK','Auf Homepage Link auf www.foodcoopshop.com anzeigen?<br /><div class=\"small\">Der Link wird im Footer angezeigt.</div>','1','boolean',180,'de_DE','2016-11-27 00:00:00','2016-11-27 00:00:00'),
-(555,1,'FCS_PAYMENT_PRODUCT_MAXIMUM','Maximalbetrag für jede Guthaben-Aufladung in Euro','500','number',127,'de_DE','2016-11-28 00:00:00','2016-11-28 00:00:00'),
 (556,1,'FCS_APP_NAME','Name der Foodcoop','FoodCoop Test','text',5,'de_DE','2017-01-12 00:00:00','2017-01-12 00:00:00'),
 (557,1,'FCS_APP_ADDRESS','Adresse der Foodcoop<br /><div class=\"small\">Wird im Footer von Homepage und E-Mails, Datenschutzerklärung, Nutzungsbedingungen usw. verwendet.</div>','Demostra&szlig;e 4,<br />\r\nA-4564 Demostadt','textarea',6,'de_DE','2017-01-12 00:00:00','2017-01-12 00:00:00'),
 (558,1,'FCS_APP_EMAIL','E-Mail-Adresse der Foodcoop<br /><div class=\"small\"></div>','demo-foodcoop@maillinator.com','text',7,'de_DE','2017-01-12 00:00:00','2017-01-12 00:00:00'),
@@ -149,7 +148,14 @@ INSERT INTO `fcs_configuration` VALUES
 (573,1,'FCS_TIMEBASED_CURRENCY_MAX_CREDIT_BALANCE_MANUFACTURER','Stundenabrechnung: Überziehungsrahmen für Hersteller<br /><div class=\"small\">Wie viele Stunden kann ein Hersteller maximal ins Plus gehen?</div>','100','number',250,'de_DE','2018-03-16 15:23:31','2018-03-16 15:23:31'),
 (574,1,'FCS_SHOW_PRODUCT_PRICE_FOR_GUESTS','Produktpreis für nicht eingeloggte Mitglieder anzeigen?','0','boolean',21,'de_DE','2018-05-28 18:05:57','2018-05-28 18:05:57'),
 (575,1,'FCS_CURRENCY_SYMBOL','Währungssymbol','€','readonly',52,'de_DE','2018-06-13 19:53:14','2018-06-13 19:53:14'),
-(576,1,'FCS_DEFAULT_LOCALE','Sprache','de_DE','readonly',55,'de_DE','2018-06-26 10:18:55','2018-06-26 10:18:55');
+(576,1,'FCS_DEFAULT_LOCALE','Sprache','de_DE','readonly',55,'de_DE','2018-06-26 10:18:55','2018-06-26 10:18:55'),
+(577,1,'FCS_FOODCOOPS_MAP_ENABLED','Auf Home Karte mit anderen Foodcoops anzeigen?','1','boolean',128,'de_DE','2019-02-11 22:22:06','2019-02-11 22:22:06'),
+(578,1,'FCS_WEEKLY_PICKUP_DAY','Wöchentlicher Abholtag','5','readonly',60,'de_DE','2019-02-18 12:38:10','2019-02-18 12:38:10'),
+(579,1,'FCS_DEFAULT_SEND_ORDER_LISTS_DAY_DELTA','Bestelllisten-Versand: x Tage vor dem Abholtag','2','readonly',65,'de_DE','2019-02-18 12:38:10','2019-02-18 12:38:10'),
+(580,1,'FCS_ORDER_POSSIBLE_FOR_STOCK_PRODUCTS_IN_ORDERS_WITH_DELIVERY_RHYTHM','Sollen Lagerprodukte mit der wöchentlichen Bestellung bestellt werden können?','1','boolean',75,'de_DE','2019-02-18 12:38:00','2019-02-18 12:38:00'),
+(581,1,'FCS_SHOW_NON_STOCK_PRODUCTS_IN_INSTANT_ORDERS','In der Sofort-Bestellung ausschließlich Lagerprodukte anzeigen?','0','boolean',76,'de_DE','2019-02-18 12:38:00','2019-02-18 12:38:00'),
+(582,1,'FCS_INCLUDE_STOCK_PRODUCTS_IN_INVOICES','Lagerprodukte in Rechnungen miteinbeziehen?','1','readonly',60,'de_DE','2019-02-18 12:38:00','2019-02-18 12:38:00'),
+(583,1,'FCS_REGISTRATION_NOTIFICATION_EMAILS','Wer soll bei neuen Registrierungen informiert werden?<br /><div class=\"small\">Mehrere E-Mail-Adressen mit , (ohne Leerzeichen) trennen.</div>','fcs-demo-superadmin@mailinator.com','text',55,'de_DE','2019-03-05 20:08:00','2019-03-05 20:08:00');
 /*!40000 ALTER TABLE `fcs_configuration` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `fcs_cronjob_logs` DISABLE KEYS */;
@@ -194,7 +200,7 @@ INSERT INTO `fcs_images` VALUES
 
 /*!40000 ALTER TABLE `fcs_manufacturer` DISABLE KEYS */;
 INSERT INTO `fcs_manufacturer` VALUES
-(4,'Demo Fleisch-Hersteller','<p>tests</p>\r\n','','2014-05-14 13:23:02','2015-05-15 13:31:41',1,0,'','','','','','','','','','',NULL,0,1,1,2,'testfcs1@mailinator.com;testfcs2@mailinator.com',0,NULL,NULL,NULL,1,NULL,0,30,100,0,0,0,''),
+(4,'Demo Fleisch-Hersteller','<p>tests</p>\r\n','','2014-05-14 13:23:02','2015-05-15 13:31:41',1,0,'','','','','','','','','','',NULL,0,1,1,2,'testfcs1@mailinator.com,testfcs2@mailinator.com',0,NULL,NULL,NULL,1,NULL,0,30,100,0,0,0,''),
 (5,'Demo Gemüse-Hersteller','<p>Gem&uuml;se-Hersteller Beschreibung&nbsp;lang</p>','<div class=\"entry-content\">\r\n<p>Gem&uuml;se-Hersteller Beschreibung kurz</p>\r\n</div>','2014-05-14 13:36:44','2016-09-27 09:34:51',1,0,'','','','','','','','','','',88,0,1,1,1,'',0,NULL,NULL,NULL,NULL,'1',0,30,100,1,1,1,''),
 (15,'Demo Milch-Hersteller','<p>Ja, ich bin der Milchhersteller!</p>','','2014-06-04 21:45:12','2016-03-07 09:02:25',1,0,'','','','','','','','','','',NULL,0,1,1,4,'test@test.at',0,NULL,NULL,NULL,NULL,NULL,0,30,100,0,0,0,''),
 (16,'Hersteller ohne Customer-Eintrag','','','2014-06-04 21:45:12','2016-03-07 09:02:25',1,0,'','','','','','','','','','',NULL,10,1,1,1,'',0,NULL,NULL,NULL,NULL,NULL,0,30,100,0,0,0,'');
@@ -232,18 +238,18 @@ INSERT INTO `fcs_payments` VALUES
 
 /*!40000 ALTER TABLE `fcs_product` DISABLE KEYS */;
 INSERT INTO `fcs_product` VALUES
-(60,15,3,0.909091,'Milch','','1 Liter','',0,0,1,'week',1,NULL,NULL,'2014-06-11 21:20:24','2014-12-14 19:47:33'),
-(102,4,2,0.000000,'Frankfurter','','<p>2 Paar</p>','',0,0,1,'week',1,NULL,NULL,'2016-04-27 21:13:37','2014-09-19 14:32:51'),
-(103,4,2,3.181819,'Bratwürstel','','2 Paar','',0,0,1,'week',1,NULL,NULL,'2016-05-05 08:28:49','2014-08-16 14:05:58'),
-(163,5,0,1.363637,'Mangold','','0,25kg','',0,0,1,'week',1,NULL,NULL,'2014-07-12 20:41:43','2017-07-26 13:24:10'),
-(339,5,0,0.000000,'Kartoffel','','','',0,0,1,'week',1,NULL,NULL,'2015-09-07 12:05:38','2015-02-26 13:54:07'),
-(340,4,0,4.545455,'Beuschl','','','',0,0,1,'week',1,NULL,NULL,'2016-05-05 08:28:45','2015-06-23 14:52:53'),
-(344,5,0,0.636364,'Knoblauch','','','100 g',0,0,1,'week',1,NULL,NULL,'2015-10-05 17:22:40','2015-07-06 10:24:44'),
-(346,5,2,1.652893,'Artischocke','','','Stück',0,0,1,'week',1,NULL,NULL,'2015-08-19 09:35:46','2015-08-19 09:35:45'),
-(347,4,2,0.000000,'Forelle','','','Stück',0,0,1,'week',1,NULL,NULL,'2018-05-17 16:13:39','2018-05-17 16:15:21'),
-(348,4,2,0.000000,'Rindfleisch','','','',0,0,1,'week',1,NULL,NULL,'2018-05-17 16:15:33','2018-05-17 16:16:38'),
-(349,5,2,4.545455,'Lagerprodukt','','','',0,1,1,'week',1,NULL,NULL,'2018-08-16 12:15:48','2018-08-16 12:16:51'),
-(350,5,2,0.000000,'Lagerprodukt mit Varianten','','','',0,1,1,'week',1,NULL,NULL,'2018-08-16 12:19:06','2018-08-16 12:19:23');
+(60,15,3,0.909091,'Milch','','1 Liter','',0,0,1,'week',1,NULL,NULL,3,NULL,'2014-06-11 21:20:24','2014-12-14 19:47:33'),
+(102,4,2,0.000000,'Frankfurter','','<p>2 Paar</p>','',0,0,1,'week',1,NULL,NULL,3,NULL,'2016-04-27 21:13:37','2014-09-19 14:32:51'),
+(103,4,2,3.181819,'Bratwürstel','','2 Paar','',0,0,1,'week',1,NULL,NULL,3,NULL,'2016-05-05 08:28:49','2014-08-16 14:05:58'),
+(163,5,0,1.363637,'Mangold','','0,25kg','',0,0,1,'week',1,NULL,NULL,3,NULL,'2014-07-12 20:41:43','2017-07-26 13:24:10'),
+(339,5,0,0.000000,'Kartoffel','','','',0,0,1,'week',1,NULL,NULL,3,NULL,'2015-09-07 12:05:38','2015-02-26 13:54:07'),
+(340,4,0,4.545455,'Beuschl','','','',0,0,1,'week',1,NULL,NULL,3,NULL,'2016-05-05 08:28:45','2015-06-23 14:52:53'),
+(344,5,0,0.636364,'Knoblauch','','','100 g',0,0,1,'week',1,NULL,NULL,3,NULL,'2015-10-05 17:22:40','2015-07-06 10:24:44'),
+(346,5,2,1.652893,'Artischocke','','','Stück',0,0,1,'week',1,NULL,NULL,3,NULL,'2015-08-19 09:35:46','2015-08-19 09:35:45'),
+(347,4,2,0.000000,'Forelle','','','Stück',0,0,1,'week',1,NULL,NULL,3,NULL,'2018-05-17 16:13:39','2018-05-17 16:15:21'),
+(348,4,2,0.000000,'Rindfleisch','','','',0,0,1,'week',1,NULL,NULL,3,NULL,'2018-05-17 16:15:33','2018-05-17 16:16:38'),
+(349,5,2,4.545455,'Lagerprodukt','','','',0,1,1,'week',1,NULL,NULL,3,NULL,'2018-08-16 12:15:48','2018-08-16 12:16:51'),
+(350,5,2,0.000000,'Lagerprodukt mit Varianten','','','',0,1,1,'week',1,NULL,NULL,3,NULL,'2018-08-16 12:19:06','2018-08-16 12:19:23');
 /*!40000 ALTER TABLE `fcs_product` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `fcs_product_attribute` DISABLE KEYS */;
@@ -354,7 +360,12 @@ INSERT INTO `phinxlog` VALUES
 (20181018125456,'Cronjobs','2018-08-27 08:28:29','2018-08-27 08:28:29',0),
 (20181027192224,'BootstrapUpdate','2018-10-27 08:28:29','2018-10-27 08:28:29',0),
 (20181029212405,'CorrectNetPrice','2018-10-29 08:28:29','2018-10-29 08:28:29',0),
-(20181226215706,'NoDeliveryDaysDefaultNull','2018-12-26 08:28:29','2018-12-26 08:28:29',0);
+(20181226215706,'NoDeliveryDaysDefaultNull','2018-12-26 08:28:29','2018-12-26 08:28:29',0),
+(20190114095502,'Fontawesome5','2019-01-14 00:00:00','2019-01-14 00:00:00',0),
+(20190211210824,'AddFoodCoopShopInstancesMap','2019-02-11 21:22:06','2019-02-11 21:22:06',0),
+(20190218101915,'IndividualSendOrderListDay','2019-02-18 11:38:10','2019-02-18 11:38:10',0),
+(20190219104144,'StockProductOrderManagement','2019-02-19 21:25:36','2019-02-11 21:25:36',0),
+(20190305183508,'ConfigurationOptimizations','2019-03-05 19:08:00','2019-03-05 19:08:00',0);
 /*!40000 ALTER TABLE `phinxlog` ENABLE KEYS */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

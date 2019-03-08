@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2019-01-06 23:23+0100\n"
-"PO-Revision-Date: 2019-01-06 23:29+0100\n"
+"POT-Creation-Date: 2019-03-04 21:58+0100\n"
+"PO-Revision-Date: 2019-03-04 22:10+0100\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: en_US\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.2\n"
+"X-Generator: Poedit 2.2.1\n"
 
 msgid "You_have_been_signed_out."
 msgstr "You have been signed out."
@@ -360,6 +360,9 @@ msgstr "Show more"
 msgid "Show_less"
 msgstr "Show less"
 
+msgid "Close"
+msgstr "Close"
+
 msgid "route_cart"
 msgstr "cart"
 
@@ -510,11 +513,11 @@ msgstr "Please only cancel if this is ok for the manfacturer!"
 msgid "Really_cancel_selected_products?"
 msgstr "Really cancel the selected products?"
 
-msgid "You_selected_1_product_for_cancellation"
-msgstr "You selected 1 product for cancellation"
+msgid "You_selected_1_product"
+msgstr "You selected 1 product"
 
-msgid "You_selected_{0}_products_for_cancellation"
-msgstr "You selected {0} products for cancellation"
+msgid "You_selected_{0}_products"
+msgstr "You selected {0} products"
 
 msgid "Adapt_amount_reason_is_mandatory."
 msgstr "Please tell us, why you want to decrease the amount."
@@ -810,8 +813,11 @@ msgstr "First delivery day"
 msgid "Delivery_day"
 msgstr "Delivery day"
 
-msgid "First_delivery_day_info."
+msgid "First_delivery_day_info_(one_product)."
 msgstr "The product can be ordered from now on."
+
+msgid "First_delivery_day_info_(multiple_products)."
+msgstr "The products can be ordered from now on."
 
 msgid "can_be_left_blank"
 msgstr "can be left blank"
@@ -824,6 +830,18 @@ msgstr "Info page for delivery rhythms"
 
 msgid "docs_route_order_handling"
 msgstr "order-handling"
+
+msgid "Last_order_weekday"
+msgstr "Last order weekday"
+
+msgid "Send_order_lists_day"
+msgstr "Send order list day"
+
+msgid "Order_lists_are_sent_automatically_next_day_in_the_morning."
+msgstr "The order lists are sent automatically on the next day in the morning."
+
+msgid "Order_lists_are_sent_automatically_on_this_day."
+msgstr "The order lists are sent automatically on the given day. If left empty, the order lists are not sent."
 
 msgid "delete"
 msgstr "delete"
@@ -929,6 +947,9 @@ msgstr "VAT"
 
 msgid "Order_day"
 msgstr "Order day"
+
+msgid "Price_per_weight"
+msgstr "Price per weight"
 
 msgid "Total_sum"
 msgstr "Total sum"
@@ -1413,6 +1434,12 @@ msgstr "The field \"order possible until\" needs to be smaller than the delivery
 msgid "The_first_delivery_day"
 msgstr "The first delivery day"
 
+msgid "The_send_order_list_day_field_is_not_valid."
+msgstr "The field \"send order list date\" is not valid."
+
+msgid "The_send_order_list_day_field_needs_to_be_between_order_possible_until_date_and_first_delivery_day."
+msgstr "The field \"send order list date\" needs to be between \"order possible until\" and the delivery day."
+
 msgid "The_first_delivery_day_needs_to_be_a_last_{0}_of_the_month."
 msgstr "The first delivery day needs to be a last {0} of the month."
 
@@ -1677,8 +1704,11 @@ msgstr "Cart"
 msgid "Load_past_orders"
 msgstr "Load past orders"
 
-msgid "This_order_will_be_placed_for_{0}"
-msgstr "This order will be placed for {0}"
+msgid "This_order_will_be_placed_for_{0}."
+msgstr "This order will be placed for {0}."
+
+msgid "Only_stock_products_are_shown."
+msgstr "Only stock products are shown."
 
 msgid "Your_credit_balance"
 msgstr "Your credit balance"
@@ -1706,6 +1736,12 @@ msgstr "Upload new file"
 
 msgid "Search_PC"
 msgstr "Search computer"
+
+msgid "Other_initiaives_working_with_FoodCoopShop"
+msgstr "Other initiatives working with FoodCoopShop"
+
+msgid "Map_with_all_Austrian_foodocops"
+msgstr "Map with <b>all</b> Austrian Foodcoops"
 
 msgid "Information"
 msgstr "Information"
@@ -1739,6 +1775,9 @@ msgstr "Print"
 
 msgid "Categories"
 msgstr "Categories"
+
+msgid "There_are_only_stock_products_shown_in_this_list."
+msgstr "There are only stock products shown in this list."
 
 msgid "Admin_area"
 msgstr "Admin panel"
@@ -1809,6 +1848,9 @@ msgstr "available"
 msgid "Move_in_cart"
 msgstr "Add to cart"
 
+msgid "Stock_product:_order_possible_only_with_instant_order_on_pick_up."
+msgstr "Stock product: order possible only with instant order when picking it up."
+
 msgid "Currently_not_on_stock"
 msgstr "Currently not on stock"
 
@@ -1818,11 +1860,11 @@ msgstr "New"
 msgid "More_infos_to_product_{0}"
 msgstr "More infos to product {0}"
 
+msgid "Last_order_day"
+msgstr "Last order day"
+
 msgid "Instant_order"
 msgstr "Instant order"
-
-msgid "Edit_product"
-msgstr "Edit product"
 
 msgid "from_which_{0}_%"
 msgstr "from which {0} %"
@@ -2082,6 +2124,12 @@ msgstr "inactive"
 msgid "active_state_all"
 msgstr "all"
 
+msgid "midnight"
+msgstr "midnight"
+
+msgid "default_value"
+msgstr "default value"
+
 msgid "price_will_be_eventually_adapted."
 msgstr "price will be eventually adapted."
 
@@ -2180,6 +2228,20 @@ msgstr "information-about-right-of-withdrawal"
 
 msgid "route_product"
 msgstr "product"
+
+#~ msgid "There_are_no_stock_products_shown_in_this_list."
+#~ msgstr "There are no stock products shown in this list."
+
+#~ msgid "Edit_product"
+#~ msgstr "Edit product"
+
+#, fuzzy
+#~ msgid "You_selected_1_product_for_changing_the_delivery_rhythm"
+#~ msgstr "You selected 1 product for cancellation"
+
+#, fuzzy
+#~ msgid "You_selected_{0}_products_for_for_changing_the_delivery_rhythm"
+#~ msgstr "You selected {0} products for cancellation"
 
 #~ msgid "You_will_then_get_a_link_to_change_your_password."
 #~ msgstr "You will then get a link to change your password."

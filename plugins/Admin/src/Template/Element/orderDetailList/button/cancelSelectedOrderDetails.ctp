@@ -14,11 +14,11 @@
  */
 use Cake\Core\Configure;
 
-if ($deposit == '' && $groupBy == '' && count($orderDetails) > 0) {
+if ($deposit == '' && $groupBy == '' && count($orderDetails) > 0 && (!$appAuth->isCustomer() || Configure::read('app.isCustomerAllowedToModifyOwnOrders'))) {
     $this->element('addScript', [
         'script' => Configure::read('app.jsNamespace').".Admin.initCancelSelectionButton();"
     ]);
-    echo '<a id="cancelSelectedProductsButton" class="btn btn-outline-light" href="javascript:void(0);"><i class="fa fa-minus-circle"></i> ' . __d('admin', 'Cancel_selected_products') . '</a>';
+    echo '<a id="cancelSelectedProductsButton" class="btn btn-outline-light" href="javascript:void(0);"><i class="fas fa-minus-circle"></i> ' . __d('admin', 'Cancel_selected_products') . '</a>';
 }
 
 ?>

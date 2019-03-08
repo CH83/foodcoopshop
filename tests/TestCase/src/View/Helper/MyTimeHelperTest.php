@@ -14,7 +14,6 @@
  */
 use App\Test\TestCase\AppCakeTestCase;
 use App\View\Helper\MyTimeHelper;
-use Cake\Core\Configure;
 use Cake\View\View;
 
 class MyTimeHelperTest extends AppCakeTestCase
@@ -22,6 +21,7 @@ class MyTimeHelperTest extends AppCakeTestCase
 
     public function setUp()
     {
+        parent::setUp();
         $this->MyTimeHelper = new MyTimeHelper(new View());
     }
 
@@ -37,37 +37,72 @@ class MyTimeHelperTest extends AppCakeTestCase
         $this->assertEquals($result, '2018-06-12');
     }
 
+    private function prepareThursdayFridayConfig()
+    {
+        $this->changeReadOnlyConfiguration('FCS_WEEKLY_PICKUP_DAY', 5);
+        $this->changeReadOnlyConfiguration('FCS_DEFAULT_SEND_ORDER_LISTS_DAY_DELTA', 1);
+    }
+    
     private function prepareWednesdayFridayConfig()
     {
-        Configure::write('app.deliveryDayDelta', 2);
-        Configure::write('app.sendOrderListsWeekday', 3);
+        $this->changeReadOnlyConfiguration('FCS_WEEKLY_PICKUP_DAY', 5);
+        $this->changeReadOnlyConfiguration('FCS_DEFAULT_SEND_ORDER_LISTS_DAY_DELTA', 2);
     }
 
     private function prepareTuesdayFridayConfig()
     {
-        Configure::write('app.deliveryDayDelta', 3);
-        Configure::write('app.sendOrderListsWeekday', 2);
+        $this->changeReadOnlyConfiguration('FCS_WEEKLY_PICKUP_DAY', 5);
+        $this->changeReadOnlyConfiguration('FCS_DEFAULT_SEND_ORDER_LISTS_DAY_DELTA', 3);
     }
 
     private function prepareMondayTuesdayConfig()
     {
-        Configure::write('app.deliveryDayDelta', 1);
-        Configure::write('app.sendOrderListsWeekday', 1);
+        $this->changeReadOnlyConfiguration('FCS_WEEKLY_PICKUP_DAY', 2);
+        $this->changeReadOnlyConfiguration('FCS_DEFAULT_SEND_ORDER_LISTS_DAY_DELTA', 1);
     }
     
-    public function testGetPreselectedDeliveryDayForOrderDetailsWednesdayFriday()
+    public function testGetFormattedNextDeliveryDayThursdayFriday()
     {
-        $this->assertGetPreselectedDeliveryDayForOrderDetails('08.10.2018', '12.10.2018'); // monday
-        $this->assertGetPreselectedDeliveryDayForOrderDetails('09.10.2018', '12.10.2018'); // tuesday
-        $this->assertGetPreselectedDeliveryDayForOrderDetails('10.10.2018', '12.10.2018'); // wednesday
-        $this->assertGetPreselectedDeliveryDayForOrderDetails('11.10.2018', '12.10.2018'); // thursday
-        $this->assertGetPreselectedDeliveryDayForOrderDetails('12.10.2018', '12.10.2018'); // friday
-        $this->assertGetPreselectedDeliveryDayForOrderDetails('13.10.2018', '19.10.2018'); // saturday
-        $this->assertGetPreselectedDeliveryDayForOrderDetails('14.10.2018', '19.10.2018'); // sunday
-        $this->assertGetPreselectedDeliveryDayForOrderDetails('15.10.2018', '19.10.2018'); // monday
-        $this->assertGetPreselectedDeliveryDayForOrderDetails('16.10.2018', '19.10.2018'); // tuesday
+        $this->prepareThursdayFridayConfig();
+        $this->assertGetFormattedNextDeliveryDay('08.10.2018', '12.10.2018'); // monday
+        $this->assertGetFormattedNextDeliveryDay('09.10.2018', '12.10.2018'); // tuesday
+        $this->assertGetFormattedNextDeliveryDay('10.10.2018', '12.10.2018'); // wednesday
+        $this->assertGetFormattedNextDeliveryDay('11.10.2018', '12.10.2018'); // thursday
+        $this->assertGetFormattedNextDeliveryDay('12.10.2018', '12.10.2018'); // friday
+        $this->assertGetFormattedNextDeliveryDay('13.10.2018', '19.10.2018'); // saturday
+        $this->assertGetFormattedNextDeliveryDay('14.10.2018', '19.10.2018'); // sunday
+        $this->assertGetFormattedNextDeliveryDay('15.10.2018', '19.10.2018'); // monday
+        $this->assertGetFormattedNextDeliveryDay('16.10.2018', '19.10.2018'); // tuesday
+    }
+    
+    public function testGetFormattedNextDeliveryDayWednesdayFriday()
+    {
+        $this->prepareWednesdayFridayConfig();
+        $this->assertGetFormattedNextDeliveryDay('08.10.2018', '12.10.2018'); // monday
+        $this->assertGetFormattedNextDeliveryDay('09.10.2018', '12.10.2018'); // tuesday
+        $this->assertGetFormattedNextDeliveryDay('10.10.2018', '12.10.2018'); // wednesday
+        $this->assertGetFormattedNextDeliveryDay('11.10.2018', '12.10.2018'); // thursday
+        $this->assertGetFormattedNextDeliveryDay('12.10.2018', '12.10.2018'); // friday
+        $this->assertGetFormattedNextDeliveryDay('13.10.2018', '19.10.2018'); // saturday
+        $this->assertGetFormattedNextDeliveryDay('14.10.2018', '19.10.2018'); // sunday
+        $this->assertGetFormattedNextDeliveryDay('15.10.2018', '19.10.2018'); // monday
+        $this->assertGetFormattedNextDeliveryDay('16.10.2018', '19.10.2018'); // tuesday
     }
 
+    public function testGetOrderPeriodFirstDayThursdayFriday()
+    {
+        $this->prepareThursdayFridayConfig();
+        $this->assertGetOrderPeriodFirstDay('27.11.2017', '23.11.2017'); // monday
+        $this->assertGetOrderPeriodFirstDay('28.11.2017', '23.11.2017'); // tuesday
+        $this->assertGetOrderPeriodFirstDay('29.11.2017', '23.11.2017'); // wednesday
+        $this->assertGetOrderPeriodFirstDay('30.11.2017', '23.11.2017'); // thursday
+        $this->assertGetOrderPeriodFirstDay('01.12.2017', '23.11.2017'); // friday
+        $this->assertGetOrderPeriodFirstDay('02.12.2017', '30.11.2017'); // saturday
+        $this->assertGetOrderPeriodFirstDay('03.12.2017', '30.11.2017'); // sunday
+        $this->assertGetOrderPeriodFirstDay('04.12.2017', '30.11.2017'); // monday
+        $this->assertGetOrderPeriodFirstDay('05.12.2017', '30.11.2017'); // tuesday
+    }
+    
     public function testGetOrderPeriodFirstDayWednesdayFriday()
     {
         $this->prepareWednesdayFridayConfig();
@@ -110,6 +145,20 @@ class MyTimeHelperTest extends AppCakeTestCase
         $this->assertGetOrderPeriodFirstDay('05.12.2017', '27.11.2017'); // tuesday
     }
 
+    public function testGetOrderPeriodLastDayThursdayFriday()
+    {
+        $this->prepareThursdayFridayConfig();
+        $this->assertGetOrderPeriodLastDay('27.11.2017', '29.11.2017'); // monday
+        $this->assertGetOrderPeriodLastDay('28.11.2017', '29.11.2017'); // tuesday
+        $this->assertGetOrderPeriodLastDay('29.11.2017', '29.11.2017'); // wednesday
+        $this->assertGetOrderPeriodLastDay('30.11.2017', '29.11.2017'); // thursday
+        $this->assertGetOrderPeriodLastDay('01.12.2017', '29.11.2017'); // friday
+        $this->assertGetOrderPeriodLastDay('02.12.2017', '06.12.2017'); // saturday
+        $this->assertGetOrderPeriodLastDay('03.12.2017', '06.12.2017'); // sunday
+        $this->assertGetOrderPeriodLastDay('04.12.2017', '06.12.2017'); // monday
+        $this->assertGetOrderPeriodLastDay('05.12.2017', '06.12.2017'); // tuesday
+    }
+    
     public function testGetOrderPeriodLastDayWednesdayFriday()
     {
         $this->prepareWednesdayFridayConfig();
@@ -155,7 +204,7 @@ class MyTimeHelperTest extends AppCakeTestCase
     
     public function testGetDeliveryDayTuesdayFriday()
     {
-        $this->prepareWednesdayFridayConfig();
+        $this->prepareTuesdayFridayConfig();
         $this->assertGetDeliveryDay('25.07.2018', '03.08.2018'); // wednesday
     }
     
@@ -202,9 +251,9 @@ class MyTimeHelperTest extends AppCakeTestCase
         $this->assertEquals($expected, $result);
     }
     
-    private function assertGetPreselectedDeliveryDayForOrderDetails($currentDay, $expected)
+    private function assertGetFormattedNextDeliveryDay($currentDay, $expected)
     {
-        $result = $this->MyTimeHelper->getPreselectedDeliveryDayForOrderDetails(strtotime($currentDay));
+        $result = $this->MyTimeHelper->getFormattedNextDeliveryDay(strtotime($currentDay));
         $this->assertEquals($expected, $result);
     }
 
